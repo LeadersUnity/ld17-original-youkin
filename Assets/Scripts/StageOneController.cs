@@ -15,7 +15,6 @@ public class Stage1Controller : MonoBehaviour
     public GameObject NikkiContent_obj;
     public TextMeshProUGUI NikkiContent_txt;
     public string[] NikkiContent_string;
-    public TextMeshProUGUI Jump_txt;
     public GameObject Jump_obj;
 
     [Header("チュートリアルのオブジェクト")]
@@ -71,8 +70,26 @@ public class Stage1Controller : MonoBehaviour
 
     IEnumerator JumpScene()
     {
+        /*
+        SpriteRenderer AorD_SR = AorD_obj.GetComponent<SpriteRenderer>();
+        yield return StartCoroutine(FadeOut(AorD_SR));
+        TextMeshProUGUI Move_txt = MoveText_obj.GetComponent<TextMeshProUGUI>();
+        yield return StartCoroutine(FadeOutText(Move_txt));
+        */
+        SpriteRenderer AorD_SR = AorD_obj.GetComponent<SpriteRenderer>();
+        TextMeshProUGUI Move_txt = MoveText_obj.GetComponent<TextMeshProUGUI>();
+        yield return StartCoroutine(FadeOutText(Move_txt));
+        yield return StartCoroutine(FadeOut(AorD_SR));
+        MoveText_obj.SetActive(false); 
+        AorD_obj.SetActive(false);
         yield return new WaitForSeconds(0);
-        Debug.Log("JumpScene");
+        Jump_obj.SetActive(true);
+        TextMeshProUGUI Jump_txt = Jump_obj.GetComponent<TextMeshProUGUI>();
+        yield return StartCoroutine(KakuText(Jump_txt, "ジャンプ"));
+        yield return new WaitForSeconds(0.5f);
+        SpriteRenderer WorSpace_SR = WorSpace_obj.GetComponent<SpriteRenderer>();
+        WorSpace_obj.SetActive(true);
+        yield return StartCoroutine(FadeIn(WorSpace_SR));
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)
@@ -93,12 +110,43 @@ public class Stage1Controller : MonoBehaviour
         }
     }
 
-    /*
-    IEnumerator FadeOut()
+    
+    IEnumerator FadeOut(SpriteRenderer SR)
     {
-        Debug.Log("FadeOut");
+        float FinishTime_f = 1f;
+        float NowTime_f = 0f;
+
+        Color c = SR.color;
+        c.a = 1f;
+        SR.color = c;
+
+        while (NowTime_f < FinishTime_f)
+        {
+            NowTime_f += Time.deltaTime;
+            c.a = Mathf.Clamp01(1 - (NowTime_f / FinishTime_f));
+            SR.color = c;
+            yield return null;
+        }
     }
-    */
+
+    IEnumerator FadeOutText(TextMeshProUGUI text)
+{
+    float FinishTime_f = 1f;
+    float NowTime_f = 0f;
+
+    Color c = text.color;
+    c.a = 1f; 
+    text.color = c;
+
+    while (NowTime_f < FinishTime_f)
+    {
+        NowTime_f += Time.deltaTime;
+        c.a = Mathf.Clamp01(1f - (NowTime_f / FinishTime_f));
+        text.color = c;
+        yield return null;
+    }
+}
+    
 
     IEnumerator KakuText(TextMeshProUGUI targetText, string content)
     {

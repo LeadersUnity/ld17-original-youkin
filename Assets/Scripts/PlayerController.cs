@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Stage1_Area")
         {
             Debug.Log("stage1Area");
-            SOC.stage1Num_i++;
+            SOC.stage1Num_i = 1;
             Destroy(other.gameObject);
         }
     }
