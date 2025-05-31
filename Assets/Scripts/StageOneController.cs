@@ -7,7 +7,7 @@ public class Stage1Controller : MonoBehaviour
 {
     [Header("stage1管理")]
     public int stage1Num_i = 0;
-    
+
     [Header("UI関連")]
     public GameObject Date_obj;
     public TextMeshProUGUI Date_txt;
@@ -15,6 +15,8 @@ public class Stage1Controller : MonoBehaviour
     public GameObject NikkiContent_obj;
     public TextMeshProUGUI NikkiContent_txt;
     public string[] NikkiContent_string;
+    public TextMeshProUGUI Jump_txt;
+    public GameObject Jump_obj;
 
     [Header("チュートリアルのオブジェクト")]
     public GameObject MoveText_obj;
@@ -28,13 +30,24 @@ public class Stage1Controller : MonoBehaviour
         MoveText_obj.SetActive(false);
         AorD_obj.SetActive(false);
         WorSpace_obj.SetActive(false);
+        Jump_obj.SetActive(false);
         StartCoroutine(StartScene());
+        
+    }
+
+    void Update()
+    {
+        if (stage1Num_i == 1)
+        {
+            StartCoroutine(JumpScene());
+            stage1Num_i = 0;
+        }
     }
 
     IEnumerator StartScene()
     {
         yield return new WaitForSeconds(2f);
-        Debug.Log("ゲームが始まる");
+        //Debug.Log("ゲームが始まる");
 
         Date_obj.SetActive(true);
         //日付表示
@@ -47,26 +60,45 @@ public class Stage1Controller : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         //AorD表示
-        TextMeshProUGUI Move_txt = MoveText_obj.GetComponent<TextMeshProUGUI>(); 
+        TextMeshProUGUI Move_txt = MoveText_obj.GetComponent<TextMeshProUGUI>();
         MoveText_obj.SetActive(true);
         yield return StartCoroutine(KakuText(Move_txt, "い ど う"));
         yield return new WaitForSeconds(0.5f);
         SpriteRenderer AorD_SR = AorD_obj.GetComponent<SpriteRenderer>();
         AorD_obj.SetActive(true);
-        AorD_SR.color = new Color(255,255,255,0);
-        AorD_SR.color = new Color(255,255,255,Time.deltaTime * 500);
-
+        yield return StartCoroutine(FadeIn(AorD_SR));
     }
 
-    IEnumerator FadeIn()
+    IEnumerator JumpScene()
     {
-        Debug.Log("FadeIn");
+        yield return new WaitForSeconds(0);
+        Debug.Log("JumpScene");
     }
 
-    IEnumerator FadeIn()
+    IEnumerator FadeIn(SpriteRenderer SR)
+    {
+        float FinishTime_f = 1f;
+        float NowTime_f = 0f;
+
+        Color c = SR.color;
+        c.a = 0;
+        SR.color = c;
+
+        while (NowTime_f < FinishTime_f)
+        {
+            NowTime_f += Time.deltaTime;
+            c.a = Mathf.Clamp01(NowTime_f / FinishTime_f);
+            SR.color = c;
+            yield return null;
+        }
+    }
+
+    /*
+    IEnumerator FadeOut()
     {
         Debug.Log("FadeOut");
     }
+    */
 
     IEnumerator KakuText(TextMeshProUGUI targetText, string content)
     {
@@ -81,5 +113,6 @@ public class Stage1Controller : MonoBehaviour
         }
     }
 
+    
     
 }

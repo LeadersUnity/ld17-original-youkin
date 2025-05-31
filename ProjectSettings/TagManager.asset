@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - floor
+  - Stage1_Area
+  - Stage1Controller
   layers:
   - Default
   - TransparentFX
@@ -12,7 +14,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
+  - Area
   - 
   - 
   - 

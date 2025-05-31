@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public bool isJumping_b = false;
 
     [Header("その他の情報")]
+    public Stage1Controller SOC;
     public GameObject playerShadow_obj;
 
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         player_anim = this.GetComponent<Animator>();
         player_rb = this.GetComponent<Rigidbody2D>();
+        SOC = GameObject.FindWithTag("Stage1Controller").GetComponent<Stage1Controller>();
     }
 
 
@@ -102,11 +104,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-    
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 12);
+    public void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.tag == "Stage1_Area")
+        {
+            Debug.Log("stage1Area");
+            SOC.stage1Num_i++;
+            Destroy(other.gameObject);
+        }
     }
 }
