@@ -16,22 +16,31 @@ public class StrokeController : MonoBehaviour
     private GameObject lineObj;
     private LineRenderer lineRenderer;
     private List<Vector2> linePoints;
+    [Header("その他のおぶえオブジェクト")]
+    public PlayerController PC;
 
     void Start()
     {
         linePoints = new List<Vector2>();
+        PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (PC.playerCanMove_b)
         {
-            _addLineObject();
-        }
+            if (PC.KakikomuCan_b)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _addLineObject();
+                }
 
-        if (Input.GetMouseButton(0))
-        {
-            _addPositionDataToLineRenderer();
+                if (Input.GetMouseButton(0))
+                {
+                    _addPositionDataToLineRenderer();
+                }
+            }
         }
     }
 

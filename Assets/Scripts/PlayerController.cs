@@ -9,10 +9,11 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D player_rb;
     public float player_x, player_y;
 
-
-
-
     [Header("Player移動情報")]
+    public bool playerCanMove_b;
+    public bool AorDCan_b;
+    public bool jumpCan_b;
+    public bool KakikomuCan_b;
     public float walkSpeed_f = 2;
     public float jumpPower_f = 50;
     public bool isJumping_b = false;
@@ -33,39 +34,46 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //移動
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (playerCanMove_b)
         {
-            this.transform.position += new Vector3(walkSpeed_f, 0, 0);
-            this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-            player_anim.SetBool("walk", true);
-            //Shadow
-            //playerShadow_obj.transform.position += new Vector3(walkSpeed_f, 0, 0);
-        }
-        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            this.transform.position += new Vector3(-walkSpeed_f, 0, 0);
-            this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
-            player_anim.SetBool("walk", true);
-            //Shadow
-            //playerShadow_obj.transform.position += new Vector3(-walkSpeed_f, 0, 0);
-        }
-        else
-        {
-            player_anim.SetBool("walk", false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (!isJumping_b)
+            if (AorDCan_b)
             {
-                isJumping_b = true;
-                player_rb.AddForce(new Vector2(0, jumpPower_f));
-                //Shadow
-                float x = this.transform.position.x;
-                playerShadow_obj.transform.position = new Vector3(x, -3.115063f, 0);
+                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                {
+                    this.transform.position += new Vector3(walkSpeed_f, 0, 0);
+                    this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+                    player_anim.SetBool("walk", true);
+                    //Shadow
+                    //playerShadow_obj.transform.position += new Vector3(walkSpeed_f, 0, 0);
+                }
+                else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                {
+                    this.transform.position += new Vector3(-walkSpeed_f, 0, 0);
+                    this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
+                    player_anim.SetBool("walk", true);
+                    //Shadow
+                    //playerShadow_obj.transform.position += new Vector3(-walkSpeed_f, 0, 0);
+                }
+                else
+                {
+                    player_anim.SetBool("walk", false);
+                }
+            }
+            if (jumpCan_b)
+            {
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    if (!isJumping_b)
+                    {
+                        isJumping_b = true;
+                        player_rb.AddForce(new Vector2(0, jumpPower_f));
+                        //Shadow
+                        float x = this.transform.position.x;
+                        playerShadow_obj.transform.position = new Vector3(x, -3.115063f, 0);
+                    }
+                }
             }
         }
-
         //かげ
         Shadow(0);
         
@@ -87,7 +95,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 shadow_vec = new Vector3(player_x, Floor_y, 0);
                 playerShadow_obj.transform.position = shadow_vec;
                 playerShadow_obj.SetActive(true);
-                Debug.Log("floorに当たった: " + hit.collider.name);
+                //Debug.Log("floorに当たった: " + hit.collider.name);
             }
         }
         
@@ -107,9 +115,18 @@ public class PlayerController : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Stage1_Area")
         {
-            Debug.Log("stage1Area");
-            SOC.stage1Num_i = 1;
-            Destroy(other.gameObject);
+            if (other.gameObject.name == "AorD_Delete_Area")
+            {
+                //Debug.Log("");
+                SOC.stage1Num_i = 1;
+                Destroy(other.gameObject);
+            }
+            else if (other.gameObject.name == "Jump_Delete_Area")
+            {
+                //Debug.Log("stage1Area");
+                SOC.stage1Num_i = 2;
+                Destroy(other.gameObject);
+            }
         }
     }
 }
