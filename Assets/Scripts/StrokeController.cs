@@ -16,6 +16,7 @@ public class StrokeController : MonoBehaviour
     private GameObject lineObj;
     private LineRenderer lineRenderer;
     private List<Vector2> linePoints;
+    
     [Header("その他のおぶえオブジェクト")]
     public PlayerController PC;
 
@@ -73,8 +74,10 @@ public class StrokeController : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 1f;
-
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+        // ★Z座標を0に固定
+        worldPos.z = 0f;
 
         // 範囲制限
         if (worldPos.x < -6.85f || worldPos.x > 6.85f || worldPos.y < -4.3f || worldPos.y > 4.4f)
@@ -87,7 +90,8 @@ public class StrokeController : MonoBehaviour
         lineRenderer.positionCount++;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, worldPos);
 
-        linePoints.Add(worldPos);
+        // ★Zを0に固定してVector2に変換（EdgeCollider2Dは2D座標）
+        linePoints.Add(new Vector2(worldPos.x, worldPos.y));
         lineObj.GetComponent<EdgeCollider2D>().SetPoints(linePoints);
     }
 

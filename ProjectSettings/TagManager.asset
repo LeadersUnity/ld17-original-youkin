@@ -7,6 +7,11 @@ TagManager:
   - floor
   - Stage1_Area
   - Stage1Controller
+  - Yuuchan
+  - Enemy
+  - RestartPos
+  - KarasuAttackArea
+  - OpenDoor
   layers:
   - Default
   - TransparentFX
