@@ -7,9 +7,11 @@ public class DoorNobuController : MonoBehaviour
 {
     public Collider2D doorNobuCollider;
     public GameObject OpenDoor_obj;
+    public Stage1Controller SOC;
     void Start()
     {
         doorNobuCollider = GetComponent<Collider2D>();
+        SOC = GameObject.FindWithTag("Stage1Controller").GetComponent<Stage1Controller>();
     }
 
     void Update()
@@ -40,6 +42,7 @@ public class DoorNobuController : MonoBehaviour
         OpenDoor_obj.SetActive(true);
         SpriteRenderer openDoor_SR = OpenDoor_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(openDoor_SR));
+        SOC.classroomCollider_obj.SetActive(false);
 
     }
 

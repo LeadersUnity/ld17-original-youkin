@@ -38,6 +38,7 @@ public class Stage1Controller : MonoBehaviour
     public GameObject karasu_fly_obj;
     public GameObject karasu_Attack_area_obj;
     public GameObject Classroom_obj;
+    public GameObject classroomCollider_obj;
     public GameObject CloseDoor_obj;
     public GameObject OpenDoor_obj;
     public GameObject whiteBoard_obj;
@@ -47,6 +48,7 @@ public class Stage1Controller : MonoBehaviour
 
     [Header("その他の情報")]
     public GameObject Player_obj;
+    public GameObject PlayerShadow_obj;
     public PlayerController PC;
     public GameObject Oka_stage1_obj;
     public GameObject Yuuchan_obj;
@@ -124,6 +126,7 @@ public class Stage1Controller : MonoBehaviour
 
         if (stage1Finish_b)
         {
+            //classroomCollider_obj.SetActive(false);
             StartCoroutine(Stage1_FinalStage());
             stage1Finish_b = false;
         }
@@ -403,6 +406,16 @@ public class Stage1Controller : MonoBehaviour
         whiteBoard_obj.SetActive(true);
         SpriteRenderer whiteBoard_SR = whiteBoard_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(whiteBoard_SR));
+        //フェードアウト
+        yield return new WaitForSeconds(0f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        //日記の内容変更
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[12]));
+        //フェードアウト
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        //日記の内容変更
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[13]));
 
         //プレイヤー動作可能
         PC.playerCanMove_b = true;
@@ -416,13 +429,16 @@ public class Stage1Controller : MonoBehaviour
 
     IEnumerator Stage1_FinalStage()
     {
-        TextMeshProUGUI DoorNobu_TMPro = DoorNobu_obj.GetComponent<TextMeshProUGUI>();
-        StartCoroutine(FadeOutText(DoorNobu_TMPro));
-        yield return new WaitForSeconds(1.5f);
-        StartCoroutine(KakuText(DoorNobu_TMPro, "つぎは あなたの ばん"));
-        yield return new WaitForSeconds(2f);
+        //Collider2D classroom_col = Classroom_obj.GetComponent<BoxCollider2D>();
         SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(player_SR));
+        SpriteRenderer playerShadow_SR = PlayerShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(playerShadow_SR));
+        
+        TextMeshProUGUI DoorNobu_TMPro = DoorNobu_obj.GetComponent<TextMeshProUGUI>();
+        StartCoroutine(FadeOutText(DoorNobu_TMPro));
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(KakuText(DoorNobu_TMPro, "つぎは あなたの ばん"));
     }
     
 
