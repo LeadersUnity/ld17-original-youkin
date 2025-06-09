@@ -15,6 +15,9 @@ public class Stage1Controller : MonoBehaviour
     public GameObject NikkiContent_obj;
     public TextMeshProUGUI NikkiContent_txt;
     public string[] NikkiContent_string;
+    
+    [Header("サウンド")]
+    public AudioSource writing_sound;
 
 
     [Header("チュートリアルの文字オブジェクト")]
@@ -523,13 +526,24 @@ public class Stage1Controller : MonoBehaviour
         targetText.color = _color;
         float waitTime = 0.1f; 
 
+        // サウンドを再生
+        if (writing_sound != null && !writing_sound.isPlaying)
+        {
+            writing_sound.Play();
+        }
+
         foreach (char c in content)
         {
             targetText.text += c;
             yield return new WaitForSeconds(waitTime);
         }
-    }
 
+        // サウンドを停止
+        if (writing_sound != null && writing_sound.isPlaying)
+        {
+            writing_sound.Stop();
+        }
+    }
     
     
 }
