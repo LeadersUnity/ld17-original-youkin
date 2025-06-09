@@ -103,6 +103,10 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            audioSource.Stop();
+        }
 
         Shadow(0);
 
