@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // 追加: TextMeshProUGUIを使用しないが、元のスクリプトに含まれていたため保持
+using TMPro; // 追加: TextMeshProUGUIを使用しないが、元のスクリプトに含まれていたため保持
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public GameObject RestartPos_obj;
     public bool GameOver_b = false;
     public bool KarasuAttack_b = false;
-
+    private bool isGameOverRoutineRunning = false; // ★追加: GameOverコルーチンが実行中かどうかのフラグ
 
 
     void Start()
@@ -111,7 +113,8 @@ public class PlayerController : MonoBehaviour
         Shadow(0);
 
         //ゲームオーバー処理開始（1回だけ実行）
-        if (GameOver_b )
+        // ★修正点: GameOver_bがtrue かつ GameOverコルーチンが実行中でない場合のみ開始
+        if (GameOver_b && !isGameOverRoutineRunning)
         {
             StartCoroutine(GameOver());
         }
@@ -137,6 +140,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator GameOver()
     {
+        isGameOverRoutineRunning = true; // ★追加: コルーチン開始時にフラグを立てる
         playerCanMove_b = false;
 
         // Restart位置確認
@@ -165,13 +169,12 @@ public class PlayerController : MonoBehaviour
 
         // フェードアウト処理
         yield return StartCoroutine(FadeOutShadowandFadeInPlayer(GameOverShadow_SR,player_SR));
-
-
         
         playerCanMove_b = true;
         GameOver_b = false;
-    
+        isGameOverRoutineRunning = false; // ★追加: コルーチン終了時にフラグを解除
     }
+
     IEnumerator FadeIn(SpriteRenderer SR)
     {
         float FinishTime_f = 1f;

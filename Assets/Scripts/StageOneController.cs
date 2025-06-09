@@ -15,7 +15,7 @@ public class Stage1Controller : MonoBehaviour
     public GameObject NikkiContent_obj;
     public TextMeshProUGUI NikkiContent_txt;
     public string[] NikkiContent_string;
-    
+
     [Header("サウンド")]
     public AudioSource writing_sound;
 
@@ -437,11 +437,22 @@ public class Stage1Controller : MonoBehaviour
         StartCoroutine(FadeOut(player_SR));
         SpriteRenderer playerShadow_SR = PlayerShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(playerShadow_SR));
-        
+
         TextMeshProUGUI DoorNobu_TMPro = DoorNobu_obj.GetComponent<TextMeshProUGUI>();
         StartCoroutine(FadeOutText(DoorNobu_TMPro));
         yield return new WaitForSeconds(2f);
         StartCoroutine(KakuText(DoorNobu_TMPro, "つぎは あなたの ばん"));
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(FadeOutText(DoorNobu_TMPro));
+        StartCoroutine(FadeOutText(Date_txt));
+        StartCoroutine(FadeOutText(NikkiContent_txt));
+        SpriteRenderer whiteBoard_SR = whiteBoard_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(whiteBoard_SR));
+        SpriteRenderer Classroom_SR = Classroom_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(Classroom_SR));
+        SpriteRenderer OpenDoor_SR = OpenDoor_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(OpenDoor_SR));
+        
     }
     
 
