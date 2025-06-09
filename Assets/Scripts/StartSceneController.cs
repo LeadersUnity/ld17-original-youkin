@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class StartSceneController : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class StartSceneController : MonoBehaviour
     public float fadeDuration = 2f;       // フェードイン・アウト時間
     private AudioSource audioSource;
     private bool isFading = false;
+
+    [Header("UI設定")]
+    public TextMeshProUGUI Title_txt;
+    public TextMeshProUGUI HajimeruButton_txt;
 
     void Start()
     {
@@ -18,6 +23,7 @@ public class StartSceneController : MonoBehaviour
 
         StartCoroutine(FadeIn(audioSource, fadeDuration));
         StartCoroutine(LoopWithFade(audioSource));
+        StartCoroutine(KakuText(Title_txt, "ぼくのにっき"));
     }
 
     IEnumerator FadeIn(AudioSource source, float duration)
@@ -38,7 +44,7 @@ public class StartSceneController : MonoBehaviour
         float timer = 0f;
         while (timer < duration)
         {
-            timer += Time.deltaTime /4;
+            timer += Time.deltaTime / 4;
             source.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
             yield return null;
         }
@@ -64,5 +70,26 @@ public class StartSceneController : MonoBehaviour
             }
         }
     }
+
+    IEnumerator KakuText(TextMeshProUGUI targetText, string content)
+    {
+        targetText.text = "";
+        Color _color = targetText.color;
+        _color.a = 1f;
+        targetText.color = _color;
+        float waitTime = 0.5f;
+
+        foreach (char c in content)
+        {
+            targetText.text += c;
+            yield return new WaitForSeconds(waitTime);
+        }
+    }
+
+    public void OnStartButtonClick()
+    {
+        Debug.Log("ゲームスタート");
+    }
+    
 }
 
