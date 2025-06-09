@@ -17,7 +17,9 @@ public class Stage1Controller : MonoBehaviour
     public string[] NikkiContent_string;
 
     [Header("サウンド")]
+    public AudioSource noise_sound;
     public AudioSource writing_sound;
+
 
 
     [Header("チュートリアルの文字オブジェクト")]
@@ -452,6 +454,8 @@ public class Stage1Controller : MonoBehaviour
         StartCoroutine(FadeOut(Classroom_SR));
         SpriteRenderer OpenDoor_SR = OpenDoor_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(OpenDoor_SR));
+        yield return new WaitForSeconds(0.2f);
+
         
     }
     
