@@ -23,7 +23,22 @@ public class StartSceneController : MonoBehaviour
 
         StartCoroutine(FadeIn(audioSource, fadeDuration));
         StartCoroutine(LoopWithFade(audioSource));
+        StartCoroutine(StartScene());
+        
+    }
+
+    public void OnStartButtonClick()
+    {
+        Debug.Log("ゲームスタート");
+
+    }
+
+    IEnumerator StartScene()
+    {
+        yield return new WaitForSeconds(2f);
         StartCoroutine(KakuText(Title_txt, "ぼくのにっき"));
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(KakuText(HajimeruButton_txt, "はじめる"));
     }
 
     IEnumerator FadeIn(AudioSource source, float duration)
@@ -86,10 +101,25 @@ public class StartSceneController : MonoBehaviour
         }
     }
 
-    public void OnStartButtonClick()
+    IEnumerator FadeOut(SpriteRenderer SR)
     {
-        Debug.Log("ゲームスタート");
+        float FinishTime_f = 1f;
+        float NowTime_f = 0f;
+
+        Color c = SR.color;
+        c.a = 1f;
+        SR.color = c;
+
+        while (NowTime_f < FinishTime_f)
+        {
+            NowTime_f += Time.deltaTime;
+            c.a = Mathf.Clamp01(1 - (NowTime_f / FinishTime_f));
+            SR.color = c;
+            yield return null;
+        }
     }
+
+    
     
 }
 
