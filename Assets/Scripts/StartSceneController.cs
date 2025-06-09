@@ -10,6 +10,7 @@ public class StartSceneController : MonoBehaviour
     public float fadeDuration = 1.5f;       // フェードイン・アウト時間
     private AudioSource audioSource;
     private bool isFading = false;
+    public AudioSource writing_sound;
 
     [Header("UI設定")]
     public TextMeshProUGUI Title_txt;
@@ -105,10 +106,22 @@ public class StartSceneController : MonoBehaviour
         targetText.color = _color;
         float waitTime = 0.5f;
 
+        // サウンドを再生
+        if (writing_sound != null && !writing_sound.isPlaying)
+        {
+            writing_sound.Play();
+        }
+
         foreach (char c in content)
         {
             targetText.text += c;
             yield return new WaitForSeconds(waitTime);
+        }
+
+        // サウンドを停止
+        if (writing_sound != null && writing_sound.isPlaying)
+        {
+            writing_sound.Stop();
         }
     }
 
