@@ -1,12 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class StartSceneController : MonoBehaviour
 {
     [Header("サウンド設定")]
     public AudioClip MainSong_sound;
-    public float fadeDuration = 2f;       // フェードイン・アウト時間
+    public float fadeDuration = 1.5f;       // フェードイン・アウト時間
     private AudioSource audioSource;
     private bool isFading = false;
 
@@ -21,7 +22,7 @@ public class StartSceneController : MonoBehaviour
         audioSource.volume = 0f;
         audioSource.Play();
 
-        StartCoroutine(FadeIn(audioSource, fadeDuration));
+        StartCoroutine(FadeInAudio(audioSource, fadeDuration));
         StartCoroutine(LoopWithFade(audioSource));
         StartCoroutine(StartScene());
         
@@ -29,19 +30,29 @@ public class StartSceneController : MonoBehaviour
 
     public void OnStartButtonClick()
     {
-        Debug.Log("ゲームスタート");
+        //Debug.Log("ゲームスタート");
+        StartCoroutine(StartNextScene());
+    }
 
+    IEnumerator StartNextScene()
+    {
+        yield return new WaitForSeconds(0f);
+        StartCoroutine(FadeOutText(HajimeruButton_txt));
+        StartCoroutine(FadeOutAudio(audioSource, fadeDuration));
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene("Stage1");
     }
 
     IEnumerator StartScene()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
         StartCoroutine(KakuText(Title_txt, "ぼくのにっき"));
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(4f);
         StartCoroutine(KakuText(HajimeruButton_txt, "はじめる"));
+        
     }
 
-    IEnumerator FadeIn(AudioSource source, float duration)
+    IEnumerator FadeInAudio(AudioSource source, float duration)
     {
         float timer = 0f;
         while (timer < duration)
@@ -53,7 +64,7 @@ public class StartSceneController : MonoBehaviour
         source.volume = 1f;
     }
 
-    IEnumerator FadeOut(AudioSource source, float duration)
+    IEnumerator FadeOutAudio(AudioSource source, float duration)
     {
         float startVolume = source.volume;
         float timer = 0f;
@@ -76,11 +87,11 @@ public class StartSceneController : MonoBehaviour
             if (!isFading)
             {
                 isFading = true;
-                yield return StartCoroutine(FadeOut(source, fadeDuration));
+                yield return StartCoroutine(FadeOutAudio(source, fadeDuration));
 
                 source.Stop();
                 source.Play();
-                yield return StartCoroutine(FadeIn(source, fadeDuration));
+                yield return StartCoroutine(FadeInAudio(source, fadeDuration));
                 isFading = false;
             }
         }
@@ -101,20 +112,21 @@ public class StartSceneController : MonoBehaviour
         }
     }
 
-    IEnumerator FadeOut(SpriteRenderer SR)
+    IEnumerator FadeOutText(TextMeshProUGUI text)
     {
         float FinishTime_f = 1f;
         float NowTime_f = 0f;
 
-        Color c = SR.color;
-        c.a = 1f;
-        SR.color = c;
+        Debug.Log("文字消えた");    
+        Color c = text.color;
+        c.a = 1f; 
+        text.color = c;
 
         while (NowTime_f < FinishTime_f)
         {
             NowTime_f += Time.deltaTime;
-            c.a = Mathf.Clamp01(1 - (NowTime_f / FinishTime_f));
-            SR.color = c;
+            c.a = Mathf.Clamp01(1f - (NowTime_f / FinishTime_f));
+            text.color = c;
             yield return null;
         }
     }
