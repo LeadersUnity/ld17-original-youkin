@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed_f = 2;
     public float jumpPower_f = 50;
     public bool isJumping_b = false;
+    [Header("サウンド関連")]
+    AudioSource audioSource;
+    public AudioClip walk_sound;
 
     [Header("その他の情報")]
     public Stage1Controller SOC;
@@ -34,6 +37,9 @@ public class PlayerController : MonoBehaviour
         player_rb = this.GetComponent<Rigidbody2D>();
         SOC = GameObject.FindWithTag("Stage1Controller").GetComponent<Stage1Controller>();
         GameOverShadow_obj.SetActive(false);
+
+        //サウンド関連
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -48,16 +54,29 @@ public class PlayerController : MonoBehaviour
                     this.transform.position += new Vector3(walkSpeed_f, 0, 0);
                     this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
                     player_anim.SetBool("walk", true);
+                    
+                    if (!audioSource.isPlaying )
+                    {
+                        audioSource.Play();
+                    }
                 }
                 else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                 {
                     this.transform.position += new Vector3(-walkSpeed_f, 0, 0);
                     this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
                     player_anim.SetBool("walk", true);
+                    if (!audioSource.isPlaying )
+                    {
+                        audioSource.Play();
+                    }
                 }
                 else
                 {
                     player_anim.SetBool("walk", false);
+                    if (audioSource.isPlaying)
+                    {
+                        audioSource.Stop();
+                    }
                 }
             }
 
@@ -67,6 +86,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!isJumping_b)
                     {
+                        audioSource.Stop();
                         isJumping_b = true;
                         player_rb.AddForce(new Vector2(0, jumpPower_f));
                         float x = this.transform.position.x;
