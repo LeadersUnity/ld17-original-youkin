@@ -61,8 +61,10 @@ public class Stage1Controller : MonoBehaviour
 
     void Start()
     {
+        
         Player_obj = GameObject.FindWithTag("Player");
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        noise_sound.Play();
         Date_obj.SetActive(false);
         NikkiContent_obj.SetActive(false);
         MoveText_obj.SetActive(false);
@@ -455,7 +457,7 @@ public class Stage1Controller : MonoBehaviour
         SpriteRenderer OpenDoor_SR = OpenDoor_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(OpenDoor_SR));
         yield return new WaitForSeconds(0.2f);
-
+        noise_sound.Stop();
         
     }
     
