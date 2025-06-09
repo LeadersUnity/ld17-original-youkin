@@ -1588,9 +1588,10 @@ MonoBehaviour:
   AorDCan_b: 0
   jumpCan_b: 0
   KakikomuCan_b: 0
-  walkSpeed_f: 0.0015
+  walkSpeed_f: 0.0018
   jumpPower_f: 250
   isJumping_b: 0
+  walk_sound: {fileID: 8300000, guid: 240d1be41f0b842f5a49bc65d2b9936a, type: 3}
   SOC: {fileID: 0}
   playerShadow_obj: {fileID: 1239353247}
   GameOverShadow_obj: {fileID: 404498881}
@@ -1669,10 +1670,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 240d1be41f0b842f5a49bc65d2b9936a, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.322
+  m_Pitch: 0.4
   Loop: 0
   Mute: 0
   Spatialize: 0

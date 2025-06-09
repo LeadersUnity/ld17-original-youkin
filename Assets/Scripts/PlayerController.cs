@@ -44,36 +44,45 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //移動
+        // 移動
         if (playerCanMove_b)
         {
             if (AorDCan_b)
             {
+                bool isMoving = false;
+
                 if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
                 {
                     this.transform.position += new Vector3(walkSpeed_f, 0, 0);
                     this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
                     player_anim.SetBool("walk", true);
-                    
-                    if (!audioSource.isPlaying )
-                    {
-                        audioSource.Play();
-                    }
+                    isMoving = true;
                 }
                 else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                 {
                     this.transform.position += new Vector3(-walkSpeed_f, 0, 0);
                     this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
                     player_anim.SetBool("walk", true);
-                    if (!audioSource.isPlaying )
+                    isMoving = true;
+                }
+                else
+                {
+                    player_anim.SetBool("walk", false);
+                }
+
+                // 足音再生処理（移動中かつジャンプしていないときのみ）
+                if (isMoving && !isJumping_b)
+                {
+                    if (!audioSource.isPlaying)
                     {
+                        audioSource.clip = walk_sound;
+                        audioSource.loop = true; // 足音をループ再生するなら true
                         audioSource.Play();
                     }
                 }
                 else
                 {
-                    player_anim.SetBool("walk", false);
-                    if (audioSource.isPlaying)
+                    if (audioSource.isPlaying && audioSource.clip == walk_sound)
                     {
                         audioSource.Stop();
                     }
@@ -86,7 +95,6 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!isJumping_b)
                     {
-                        audioSource.Stop();
                         isJumping_b = true;
                         player_rb.AddForce(new Vector2(0, jumpPower_f));
                         float x = this.transform.position.x;
