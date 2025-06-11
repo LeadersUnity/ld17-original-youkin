@@ -23,7 +23,7 @@ public class StageFourController : MonoBehaviour
     [Header("ステージ4オブジェクト")]
     public GameObject room_obj;
     public GameObject bed_obj;
-    public GameObject bed_inBoku_obj;
+    public GameObject bed_Bokuin_obj;
     public GameObject boku_inBed_obj;
     public GameObject roomShadow_obj;
     [Header("プレイヤー情報")]
@@ -42,6 +42,9 @@ public class StageFourController : MonoBehaviour
         NikkiContent_obj.SetActive(false);
         room_obj.SetActive(false);
         roomShadow_obj.SetActive(false);
+        bed_obj.SetActive(false);
+        bed_Bokuin_obj.SetActive(false);
+        boku_inBed_obj.SetActive(false);
         StartCoroutine(StartScene());
     }
 
@@ -84,6 +87,10 @@ public class StageFourController : MonoBehaviour
         room_obj.SetActive(true);
         SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(room_SR));
+
+        bed_obj.SetActive(true);
+        SpriteRenderer bed_SR = bed_obj.GetComponent<SpriteRenderer>();
+        yield return StartCoroutine(FadeIn(bed_SR));
         roomShadow_obj.SetActive(true);
         SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(roomShadow_SR));
@@ -97,8 +104,28 @@ public class StageFourController : MonoBehaviour
 
     IEnumerator PhaseOne()
     {
-        yield return new WaitForSeconds(0);
-        Debug.Log("フェーズ１");
+        //プレイヤー操作
+        PC.player_anim.SetBool("walk", false);
+        PC.playerCanMove_b = false;
+        //プレイヤーフェードアウト
+        yield return new WaitForSeconds(2.3f);
+        SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
+        yield return StartCoroutine(FadeOut(player_SR));
+
+        SpriteRenderer bed_SR = bed_obj.GetComponent<SpriteRenderer>();
+        bed_Bokuin_obj.SetActive(true);
+        boku_inBed_obj.SetActive(true);
+        SpriteRenderer bed_bokuin_SR = bed_Bokuin_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(bed_bokuin_SR));
+        StartCoroutine(FadeOut(bed_SR));
+        SpriteRenderer Boku_inbed_SR = boku_inBed_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(Boku_inbed_SR));
+        SpriteRenderer playerShadow_SR = PlayerShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(playerShadow_SR));
+
+
+
+        
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)
