@@ -441,12 +441,12 @@ public class Stage1Controller : MonoBehaviour
         StartCoroutine(FadeOut(player_SR));
         SpriteRenderer playerShadow_SR = PlayerShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(playerShadow_SR));
-
+        yield return new WaitForSeconds(2f);
         TextMeshProUGUI DoorNobu_TMPro = DoorNobu_obj.GetComponent<TextMeshProUGUI>();
         StartCoroutine(FadeOutText(DoorNobu_TMPro));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         StartCoroutine(KakuText(DoorNobu_TMPro, "つぎは あなたの ばん"));
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(7f);
         StartCoroutine(FadeOutText(DoorNobu_TMPro));
         StartCoroutine(FadeOutText(Date_txt));
         StartCoroutine(FadeOutText(NikkiContent_txt));
