@@ -12,6 +12,8 @@ TagManager:
   - RestartPos
   - KarasuAttackArea
   - OpenDoor
+  - Stage4Controller
+  - Stage4_Area
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,8 @@ using TMPro; // 追加: TextMeshProUGUIを使用しないが、元のスクリ�
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("ステージNUM")]
+    public int stageNum;
     [Header("Playerコンポーネント情報")]
     public Animator player_anim;
     public Rigidbody2D player_rb;
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("その他の情報")]
     public Stage1Controller SOC;
+    public StageFourController SFC;
     public GameObject playerShadow_obj;
     public GameObject GameOverShadow_obj;
     public GameObject RestartPos_obj;
@@ -37,9 +40,17 @@ public class PlayerController : MonoBehaviour
     {
         player_anim = this.GetComponent<Animator>();
         player_rb = this.GetComponent<Rigidbody2D>();
-        SOC = GameObject.FindWithTag("Stage1Controller").GetComponent<Stage1Controller>();
+        switch (stageNum)
+        {
+            case 1:
+                SOC = GameObject.FindWithTag("Stage1Controller").GetComponent<Stage1Controller>();
+                break;
+            case 4:
+                SFC = GameObject.FindWithTag("Stage4Controller").GetComponent<StageFourController>();
+                break;
+        }
+        
         GameOverShadow_obj.SetActive(false);
-
         //サウンド関連
         audioSource = GetComponent<AudioSource>();
     }
@@ -266,8 +277,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+        
         if (other.gameObject.tag == "Stage1_Area")
         {
+            //ステージ1
             if (other.gameObject.name == "AorD_Delete_Area")
             {
                 SOC.stage1Num_i = 1;
@@ -292,12 +305,22 @@ public class PlayerController : MonoBehaviour
             {
                 SOC.stage1Num_i = 5;
             }
+            
             other.gameObject.SetActive(false);
         }
+        //ステージ4
+        if (other.gameObject.tag == "Stage4_Area")
+        {
+            if (other.gameObject.name == "RoomDelete_Area")
+            {
+                SFC.stage4Num_i = 1;
+            }
+        }
+
 
         if (other.gameObject.tag == "KarasuAttackArea")
-        {
-            KarasuAttack_b = true;
-        }
+            {
+                KarasuAttack_b = true;
+            }
     }
 }

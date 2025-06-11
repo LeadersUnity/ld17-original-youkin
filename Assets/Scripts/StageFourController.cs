@@ -6,7 +6,7 @@ using TMPro;
 
 public class StageFourController : MonoBehaviour
 {
-    [Header("stage1管理")]
+    [Header("stage4管理")]
     public int stage4Num_i = 0;
 
     [Header("UI関連")]
@@ -21,12 +21,14 @@ public class StageFourController : MonoBehaviour
     public AudioSource noise_sound;
     public AudioSource writing_sound;
     [Header("ステージ4オブジェクト")]
-    public GameObject room_stage4_obj;
+    public GameObject room_obj;
     public GameObject roomShadow_obj;
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
     public GameObject PlayerShadow_obj;
     public PlayerController PC;
+    [Header("その他のオブジェクト")]
+    public GameObject[] deleteArea_obj;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,9 +37,20 @@ public class StageFourController : MonoBehaviour
         noise_sound.Play();
         Date_obj.SetActive(false);
         NikkiContent_obj.SetActive(false);
-        room_stage4_obj.SetActive(false);
+        room_obj.SetActive(false);
         roomShadow_obj.SetActive(false);
         StartCoroutine(StartScene());
+    }
+
+    private void Update() {
+        switch (stage4Num_i)
+        {
+            case 1:
+                StartCoroutine(PhaseOne());
+                //deleteArea_obj[1].SetActive(true);
+                stage4Num_i = 0;
+                break;
+        }
     }
 
     IEnumerator StartScene()
@@ -53,7 +66,36 @@ public class StageFourController : MonoBehaviour
         //日記内容表示
         NikkiContent_obj.SetActive(true);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[0]));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.3f);
+        //日記フェードアウト
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[1]));
+        yield return new WaitForSeconds(2.3f);
+        //日記フェードアウト
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[2]));
+        yield return new WaitForSeconds(2.3f);
+
+
+        //ルーム表示
+        room_obj.SetActive(true);
+        SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
+        yield return StartCoroutine(FadeIn(room_SR));
+        roomShadow_obj.SetActive(true);
+        SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
+        yield return StartCoroutine(FadeIn(roomShadow_SR));
+
+        //プレイヤー操作
+        PC.playerCanMove_b = true;
+        PC.AorDCan_b = true;
+        PC.jumpCan_b = true;
+        
+    }
+
+    IEnumerator PhaseOne()
+    {
+        yield return new WaitForSeconds(0);
+        Debug.Log("フェーズ１");
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)

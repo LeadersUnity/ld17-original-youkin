@@ -1775,6 +1775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b79d7ed30e6489c95174e2ad2c83bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageNum: 1
   player_anim: {fileID: 0}
   player_rb: {fileID: 0}
   player_x: 0
@@ -1788,6 +1789,7 @@ MonoBehaviour:
   isJumping_b: 0
   walk_sound: {fileID: 8300000, guid: 240d1be41f0b842f5a49bc65d2b9936a, type: 3}
   SOC: {fileID: 0}
+  SFC: {fileID: 0}
   playerShadow_obj: {fileID: 1239353247}
   GameOverShadow_obj: {fileID: 404498881}
   RestartPos_obj: {fileID: 1764951012}
