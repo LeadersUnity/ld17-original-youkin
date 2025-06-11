@@ -22,6 +22,9 @@ public class StageFourController : MonoBehaviour
     public AudioSource writing_sound;
     [Header("ステージ4オブジェクト")]
     public GameObject room_obj;
+    public GameObject bed_obj;
+    public GameObject bed_inBoku_obj;
+    public GameObject boku_inBed_obj;
     public GameObject roomShadow_obj;
     [Header("プレイヤー情報")]
     public GameObject Player_obj;

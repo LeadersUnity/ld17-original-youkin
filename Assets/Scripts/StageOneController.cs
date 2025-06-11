@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Stage1Controller : MonoBehaviour
 {
@@ -458,6 +459,9 @@ public class Stage1Controller : MonoBehaviour
         StartCoroutine(FadeOut(OpenDoor_SR));
         yield return new WaitForSeconds(0.2f);
         noise_sound.Stop();
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Stage4");
+
         
     }
     
