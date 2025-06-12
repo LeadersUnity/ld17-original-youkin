@@ -26,6 +26,8 @@ public class StageFourController : MonoBehaviour
     public GameObject bed_Bokuin_obj;
     public GameObject boku_inBed_obj;
     public GameObject roomShadow_obj;
+    public GameObject Yuuchan_hanten_half_obj;
+
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
     public GameObject PlayerShadow_obj;
@@ -45,6 +47,7 @@ public class StageFourController : MonoBehaviour
         bed_obj.SetActive(false);
         bed_Bokuin_obj.SetActive(false);
         boku_inBed_obj.SetActive(false);
+        Yuuchan_hanten_half_obj.SetActive(false);
         StartCoroutine(StartScene());
     }
 
@@ -86,11 +89,11 @@ public class StageFourController : MonoBehaviour
         //ルーム表示
         room_obj.SetActive(true);
         SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
-        yield return StartCoroutine(FadeIn(room_SR));
+        StartCoroutine(FadeIn(room_SR));
 
         bed_obj.SetActive(true);
         SpriteRenderer bed_SR = bed_obj.GetComponent<SpriteRenderer>();
-        yield return StartCoroutine(FadeIn(bed_SR));
+        StartCoroutine(FadeIn(bed_SR));
         roomShadow_obj.SetActive(true);
         SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(roomShadow_SR));
@@ -99,6 +102,7 @@ public class StageFourController : MonoBehaviour
         PC.playerCanMove_b = true;
         PC.AorDCan_b = true;
         PC.jumpCan_b = true;
+        PC.KakikomuCan_b = true;
         
     }
 
@@ -108,7 +112,7 @@ public class StageFourController : MonoBehaviour
         PC.player_anim.SetBool("walk", false);
         PC.playerCanMove_b = false;
         //プレイヤーフェードアウト
-        yield return new WaitForSeconds(2.3f);
+        yield return new WaitForSeconds(2f);
         SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeOut(player_SR));
 
@@ -122,6 +126,14 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeIn(Boku_inbed_SR));
         SpriteRenderer playerShadow_SR = PlayerShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(playerShadow_SR));
+        //Yuuchan表示
+        yield return new WaitForSeconds(2.7f);
+        Yuuchan_hanten_half_obj.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        SpriteRenderer Yuuchan_hanten_half_SR = Yuuchan_hanten_half_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(Yuuchan_hanten_half_SR));
+        
+
 
 
 
