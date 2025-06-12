@@ -45,8 +45,7 @@ public class StageFourController : MonoBehaviour
     {
         //UI情報
         text_mat = Date_obj.GetComponent<Material>();
-        
-        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, _color);
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black );
 
         Player_obj = GameObject.FindWithTag("Player");
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
@@ -90,10 +89,12 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(2.3f);
         //日記フェードアウト
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        //日記内容変更
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[1]));
         yield return new WaitForSeconds(2.3f);
         //日記フェードアウト
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        //日記内容変更
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[2]));
         yield return new WaitForSeconds(2.3f);
 
@@ -138,8 +139,13 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeIn(Boku_inbed_SR));
         SpriteRenderer playerShadow_SR = PlayerShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(playerShadow_SR));
+        //日記フェードアウト
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        //日記内容変更
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[3]));
         //Yuuchan表示
-        yield return new WaitForSeconds(2.7f);
+        yield return new WaitForSeconds(0.5f);
         Yuuchan_hanten_half_obj.SetActive(true);
         yield return new WaitForSeconds(2f);
         SpriteRenderer Yuuchan_hanten_half_SR = Yuuchan_hanten_half_obj.GetComponent<SpriteRenderer>();
@@ -147,18 +153,31 @@ public class StageFourController : MonoBehaviour
 
         //ステージ4フェーズ1全消し
         yield return new WaitForSeconds(2f);
+
         SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(room_SR));
         //SpriteRenderer bed_SR = bed_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(bed_bokuin_SR));
         StartCoroutine(FadeOut(Boku_inbed_SR));
         SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
+        
         StartCoroutine(FadeOut(roomShadow_SR));
+        StartCoroutine(FadeOutText(Date_txt));
+        StartCoroutine(FadeOutText(NikkiContent_txt));
+
+        //フェード2
+        yield return new WaitForSeconds(1f);
         background_obj.SetActive(true);
         SpriteRenderer background_SR = background_obj.GetComponent<SpriteRenderer>();
-        StartCoroutine(FadeIn(background_SR));
+        yield return StartCoroutine(FadeIn(background_SR));
+        yield return new WaitForSeconds(1f);
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
+        NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
         
 
+        yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[3]));
+        
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)
