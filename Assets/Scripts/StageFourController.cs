@@ -27,6 +27,8 @@ public class StageFourController : MonoBehaviour
     public GameObject boku_inBed_obj;
     public GameObject roomShadow_obj;
     public GameObject Yuuchan_hanten_half_obj;
+    //フェーズ２
+    public GameObject background_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -34,9 +36,18 @@ public class StageFourController : MonoBehaviour
     public PlayerController PC;
     [Header("その他のオブジェクト")]
     public GameObject[] deleteArea_obj;
+    [Header("UI関連")]
+    public Material text_mat;
+    public Color textColor_black = Color.black;
+    public Color textColor_white = Color.white;
     // Start is called before the first frame update
     void Start()
     {
+        //UI情報
+        text_mat = Date_obj.GetComponent<Material>();
+        
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, _color);
+
         Player_obj = GameObject.FindWithTag("Player");
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         noise_sound.Play();
@@ -48,6 +59,7 @@ public class StageFourController : MonoBehaviour
         bed_Bokuin_obj.SetActive(false);
         boku_inBed_obj.SetActive(false);
         Yuuchan_hanten_half_obj.SetActive(false);
+        background_obj.SetActive(false);
         StartCoroutine(StartScene());
     }
 
@@ -132,12 +144,21 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SpriteRenderer Yuuchan_hanten_half_SR = Yuuchan_hanten_half_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(Yuuchan_hanten_half_SR));
+
+        //ステージ4フェーズ1全消し
+        yield return new WaitForSeconds(2f);
+        SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(room_SR));
+        //SpriteRenderer bed_SR = bed_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(bed_bokuin_SR));
+        StartCoroutine(FadeOut(Boku_inbed_SR));
+        SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(roomShadow_SR));
+        background_obj.SetActive(true);
+        SpriteRenderer background_SR = background_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(background_SR));
         
 
-
-
-
-        
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)
