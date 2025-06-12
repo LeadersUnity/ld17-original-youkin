@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("ステージNUM")]
     public int stageNum;
+    [Header("プレイヤー状態情報")]
+    public bool isHanten_b;
     [Header("Playerコンポーネント情報")]
     public Animator player_anim;
     public Rigidbody2D player_rb;
@@ -128,6 +130,15 @@ public class PlayerController : MonoBehaviour
         if (GameOver_b && !isGameOverRoutineRunning)
         {
             StartCoroutine(GameOver());
+        }
+
+        //プレイヤー反転
+        if (isHanten_b)
+        {
+            player_anim.SetBool("hanten", true);
+        }else
+        {
+            player_anim.SetBool("hanten", false);
         }
     }
 

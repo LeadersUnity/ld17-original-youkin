@@ -160,8 +160,8 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeOut(bed_bokuin_SR));
         StartCoroutine(FadeOut(Boku_inbed_SR));
         SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
-        
         StartCoroutine(FadeOut(roomShadow_SR));
+        //日記フェードアウト
         StartCoroutine(FadeOutText(Date_txt));
         StartCoroutine(FadeOutText(NikkiContent_txt));
 
@@ -173,10 +173,11 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
         NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
-        
+        //プレイヤー反転
+        PC.isHanten_b = true;
 
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
-        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[3]));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[4]));
         
     }
 
