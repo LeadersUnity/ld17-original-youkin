@@ -38,6 +38,7 @@ public class StageFourController : MonoBehaviour
     public YuuchanController YC;
     [Header("その他のオブジェクト")]
     public GameObject[] deleteArea_obj;
+    public StrokeController SC;
     [Header("UI関連")]
     public Material text_mat;
     public Color textColor_black = Color.black;
@@ -48,6 +49,7 @@ public class StageFourController : MonoBehaviour
         //UI情報
         text_mat = Date_obj.GetComponent<Material>();
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black );
+        SC = GameObject.FindWithTag( "StrokeController" ).GetComponent<StrokeController>();
         for (int i = 0; i < 10; i++)
         {
             if (deleteArea_obj[i] != null)
@@ -194,8 +196,10 @@ public class StageFourController : MonoBehaviour
         NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
 
         //プレイヤー反転
+        //書き込み反転
+        SC.lineColor = Color.white;
         PC.isHanten_b = true;
-        PC.playerCanMove_b = true;
+        
         //日記表示
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[4]));
@@ -209,8 +213,16 @@ public class StageFourController : MonoBehaviour
 
         //ユウちゃん表示
         Yuuchan_obj.SetActive(true);
-        YC.yuuchan_anim.SetBool("hanten", true);
-            
+        SpriteRenderer yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
+        Color c = yuuchan_SR.color;
+        c.a = 0;
+        yuuchan_SR.color = c;
+        //ユウちゃん反転
+        YC.yuuchan_anim.SetBool("hanten", true);   
+        
+        StartCoroutine(FadeIn(yuuchan_SR)); 
+         
+
         
     }
 

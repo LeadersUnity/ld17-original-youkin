@@ -6,7 +6,7 @@ public class StrokeController : MonoBehaviour
 {
     [Header("描画設定")]
     [SerializeField] Material lineMaterial;
-    [SerializeField] Color lineColor = new Color(1f, 1f, 1f, 0.5f); // 薄めの色
+    [SerializeField] public Color lineColor = new Color(1f, 1f, 1f, 0.5f); // 薄めの色
     [Range(0.05f, 0.5f)]
     [SerializeField] float lineWidth = 0.1f;
 

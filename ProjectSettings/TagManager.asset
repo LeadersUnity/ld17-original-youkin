@@ -14,6 +14,7 @@ TagManager:
   - OpenDoor
   - Stage4Controller
   - Stage4_Area
+  - StrokeController
   layers:
   - Default
   - TransparentFX

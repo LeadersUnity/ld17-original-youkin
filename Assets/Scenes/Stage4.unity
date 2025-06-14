@@ -1073,7 +1073,7 @@ Transform:
   m_GameObject: {fileID: 693311125}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.45, y: -0.55, z: 0}
+  m_LocalPosition: {x: -3.45, y: -2.99, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2065,6 +2065,7 @@ MonoBehaviour:
   PlayerShadow_obj: {fileID: 1239353247}
   PC: {fileID: 0}
   Yuuchan_obj: {fileID: 693311125}
+  YC: {fileID: 0}
   deleteArea_obj:
   - {fileID: 1543274967}
   - {fileID: 0}
@@ -2076,6 +2077,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  SC: {fileID: 0}
   text_mat: {fileID: 0}
   textColor_black: {r: 0, g: 0, b: 0, a: 1}
   textColor_white: {r: 1, g: 1, b: 1, a: 1}
@@ -2302,7 +2304,7 @@ GameObject:
   - component: {fileID: 1206388085}
   m_Layer: 0
   m_Name: StrokeController
-  m_TagString: Untagged
+  m_TagString: StrokeController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
