@@ -37,7 +37,9 @@ public class StageFourController : MonoBehaviour
     public GameObject Player_obj;
     public GameObject PlayerShadow_obj;
     public PlayerController PC;
+    [Header("ユウちゃん情報")]
     public GameObject Yuuchan_obj;
+    public GameObject YuuchanShadow_obj;
     public YuuchanController YC;
     [Header("その他のオブジェクト")]
     public GameObject[] deleteArea_obj;
@@ -232,6 +234,9 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[6]));
 
+        //カラス始動
+
+
 
         
     }
@@ -307,15 +312,15 @@ public class StageFourController : MonoBehaviour
             yield return null;
         }
     }
-    
+
 
     IEnumerator KakuText(TextMeshProUGUI targetText, string content)
     {
         targetText.text = "";
         Color _color = targetText.color;
-        _color.a = 1f; 
+        _color.a = 1f;
         targetText.color = _color;
-        float waitTime = 0.1f; 
+        float waitTime = 0.1f;
 
         // サウンドを再生
         if (writing_sound != null && !writing_sound.isPlaying)
@@ -334,5 +339,6 @@ public class StageFourController : MonoBehaviour
         {
             writing_sound.Stop();
         }
+        
     }
 }
