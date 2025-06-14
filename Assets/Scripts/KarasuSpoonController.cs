@@ -1,17 +1,18 @@
-/*
-    KarasuSpoonControllerが満たす要件：
-    ・カラスの出る順番を管理 → Spoon()コルーチンで実現
-    ・PlayerControllerのGameOver_bがtrueになったら、最初からの出る順番になるように → Update()内のリセット処理で実現
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class KarasuSpoonController : MonoBehaviour
 {
     [Header("出現させるカラスのプレハブ配列")]
     public GameObject[] karasuPrefabs;
-
+    [Header("ユウちゃん発言")]
+    public GameObject NikkiContent_Yuuchan_obj;
+    public TextMeshProUGUI NikkiContent_Yuuchan_txt;
+    public string[] NikkiContent_Yuuchan_string;
+    [Header("サウンド")]
+    public AudioSource writing_sound;
     [Header("プレイヤー情報")]
     private PlayerController PC;
 
@@ -37,7 +38,7 @@ public class KarasuSpoonController : MonoBehaviour
     void Update()
     {
         // --- ゲームオーバー時のリセット処理 ---
-        
+        NikkiContent_Yuuchan_obj.SetActive(true);
         // プレイヤーがゲームオーバーになり、かつまだリセット処理を開始していない場合
         if (PC.GameOver_b && !isResetting)
         {
@@ -56,7 +57,7 @@ public class KarasuSpoonController : MonoBehaviour
             {
                 if (karasu != null) karasu.SetActive(false);
             }
-            
+
             // 新しく出現シーケンスを開始し、その参照を保存
             runningSpoonCoroutine = StartCoroutine(SpoonSequence());
         }
@@ -76,26 +77,97 @@ public class KarasuSpoonController : MonoBehaviour
         {
             if (karasu != null) karasu.SetActive(false);
         }
-
+        yield return new WaitForSeconds(3.0f);
         // --- ここから出現シーケンス ---
-
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[0]));
         yield return new WaitForSeconds(2.0f);
-        
-            // メモ：localPositionは親オブジェクトからの相対位置。ワールド座標ならpositionを使う。
-            karasuPrefabs[0].transform.localPosition = new Vector3(0, 0, 0); 
-            karasuPrefabs[0].SetActive(true);
-        
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return new WaitForSeconds(1.0f);
 
-        yield return new WaitForSeconds(5.0f);
-        
-            karasuPrefabs[1].transform.localPosition = new Vector3(-11.43f, 2.33f, 0); 
-            karasuPrefabs[1].SetActive(true);
-        
+        //カラス１
+        karasuPrefabs[0].transform.localPosition = new Vector3(0, 0, 0);
+        karasuPrefabs[0].SetActive(true);
 
-        yield return new WaitForSeconds(9.0f);
+        //カラス2
+        yield return new WaitForSeconds(3.0f);
+        karasuPrefabs[1].transform.localPosition = new Vector3(-11.43f, 2.33f, 0);
+        karasuPrefabs[1].SetActive(true);
+
+        //カラス3
+        yield return new WaitForSeconds(2.0f);
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[1]));
+        yield return new WaitForSeconds(2.0f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return new WaitForSeconds(2.0f);
+        karasuPrefabs[2].transform.localPosition = new Vector3(-8.65f, 1.83f, 0);
+        karasuPrefabs[2].SetActive(true);
+
         
-            karasuPrefabs[2].transform.localPosition = new Vector3(-8.65f, 1.83f, 0);
-            karasuPrefabs[2].SetActive(true);
-        
+        yield return new WaitForSeconds(3.0f);
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[2]));
+        yield return new WaitForSeconds(2.0f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return new WaitForSeconds(2.0f);
+        karasuPrefabs[3].transform.localPosition = new Vector3(-11.77f, -4.67f, 0);
+        karasuPrefabs[3].SetActive(true);
+        karasuPrefabs[4].transform.localPosition = new Vector3(0.32f, -4.86f, 0);
+        karasuPrefabs[4].SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[3]));
+        yield return new WaitForSeconds(2.0f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return new WaitForSeconds(2.0f);
+        karasuPrefabs[5].transform.localPosition = new Vector3(-0.08f, 1.58f, 0);
+        karasuPrefabs[5].SetActive(true);
+        karasuPrefabs[6].transform.localPosition = new Vector3(-5.95f, 1.64f, 0);
+        karasuPrefabs[6].SetActive(true);
     }
+
+    IEnumerator KakuText(TextMeshProUGUI targetText, string content)
+    {
+        targetText.text = "";
+        Color _color = targetText.color;
+        _color.a = 1f;
+        targetText.color = _color;
+        float waitTime = 0.1f;
+
+        // サウンドを再生
+        if (writing_sound != null && !writing_sound.isPlaying)
+        {
+            writing_sound.Play();
+        }
+
+        foreach (char c in content)
+        {
+            targetText.text += c;
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        // サウンドを停止
+        if (writing_sound != null && writing_sound.isPlaying)
+        {
+            writing_sound.Stop();
+        }
+    }
+    
+    IEnumerator FadeOutText(TextMeshProUGUI text)
+    {
+        float FinishTime_f = 1f;
+        float NowTime_f = 0f;
+
+        Color c = text.color;
+        c.a = 1f; 
+        text.color = c;
+
+        while (NowTime_f < FinishTime_f)
+        {
+            NowTime_f += Time.deltaTime;
+            c.a = Mathf.Clamp01(1f - (NowTime_f / FinishTime_f));
+            text.color = c;
+            yield return null;
+        }
+    }
+
+    
 }
