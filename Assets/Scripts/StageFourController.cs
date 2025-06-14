@@ -31,6 +31,7 @@ public class StageFourController : MonoBehaviour
     public GameObject roomShadow_obj;
     public GameObject Yuuchan_hanten_half_obj;
     //フェーズ２
+    public GameObject KarasuSpoon_obj;
     public GameObject background_obj;
 
     [Header("プレイヤー情報")]
@@ -235,7 +236,7 @@ public class StageFourController : MonoBehaviour
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[6]));
 
         //カラス始動
-
+        KarasuSpoon_obj.SetActive(true);
 
 
         
