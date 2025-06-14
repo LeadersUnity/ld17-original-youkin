@@ -34,6 +34,8 @@ public class StageFourController : MonoBehaviour
     public GameObject Player_obj;
     public GameObject PlayerShadow_obj;
     public PlayerController PC;
+    public GameObject Yuuchan_obj;
+    public YuuchanController YC;
     [Header("その他のオブジェクト")]
     public GameObject[] deleteArea_obj;
     [Header("UI関連")]
@@ -46,7 +48,15 @@ public class StageFourController : MonoBehaviour
         //UI情報
         text_mat = Date_obj.GetComponent<Material>();
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black );
+        for (int i = 0; i < 10; i++)
+        {
+            if (deleteArea_obj[i] != null)
+            {
+                deleteArea_obj[i].SetActive(false);
+            }
+        }
 
+        YC = Yuuchan_obj.GetComponent<YuuchanController>();
         Player_obj = GameObject.FindWithTag("Player");
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         noise_sound.Play();
@@ -59,6 +69,7 @@ public class StageFourController : MonoBehaviour
         boku_inBed_obj.SetActive(false);
         Yuuchan_hanten_half_obj.SetActive(false);
         background_obj.SetActive(false);
+        Yuuchan_obj.SetActive(false);
         StartCoroutine(StartScene());
     }
 
@@ -77,7 +88,7 @@ public class StageFourController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         //Debug.Log("ゲームが始まる");
-
+        
         Date_obj.SetActive(true);
         //日付表示
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
@@ -111,6 +122,8 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(roomShadow_SR));
 
+        deleteArea_obj[0].SetActive(true);
+
         //プレイヤー操作
         PC.playerCanMove_b = true;
         PC.AorDCan_b = true;
@@ -121,6 +134,7 @@ public class StageFourController : MonoBehaviour
 
     IEnumerator PhaseOne()
     {
+        deleteArea_obj[0].SetActive(false);
         //プレイヤー操作
         PC.player_anim.SetBool("walk", false);
         PC.playerCanMove_b = false;
@@ -153,7 +167,6 @@ public class StageFourController : MonoBehaviour
 
         //ステージ4フェーズ1全消し
         yield return new WaitForSeconds(2f);
-
         SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(room_SR));
         //SpriteRenderer bed_SR = bed_obj.GetComponent<SpriteRenderer>();
@@ -161,6 +174,12 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeOut(Boku_inbed_SR));
         SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(roomShadow_SR));
+        yield return new WaitForSeconds(1f);
+        room_obj.SetActive(false);
+        bed_Bokuin_obj.SetActive(false);
+        boku_inBed_obj.SetActive(false);
+        roomShadow_obj.SetActive(false);
+
         //日記フェードアウト
         StartCoroutine(FadeOutText(Date_txt));
         StartCoroutine(FadeOutText(NikkiContent_txt));
@@ -173,11 +192,25 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
         NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
+
         //プレイヤー反転
         PC.isHanten_b = true;
-
+        PC.playerCanMove_b = true;
+        //日記表示
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[4]));
+        yield return new WaitForSeconds(2f);
+
+        //プレイヤー表示
+        yield return StartCoroutine(FadeIn(player_SR));
+        //日記変更
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[5]));
+
+        //ユウちゃん表示
+        Yuuchan_obj.SetActive(true);
+        YC.yuuchan_anim.SetBool("hanten", true);
+            
         
     }
 
