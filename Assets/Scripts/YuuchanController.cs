@@ -16,6 +16,7 @@ public class YuuchanController : MonoBehaviour
     void Start()
     {
         yuuchan_anim = GetComponent<Animator>();
+        yuuchan_anim.SetBool("hanten", true);
         Yuuchan_rb = GetComponent<Rigidbody2D>();
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }

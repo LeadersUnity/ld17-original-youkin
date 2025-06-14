@@ -16,6 +16,9 @@ public class StageFourController : MonoBehaviour
     public GameObject NikkiContent_obj;
     public TextMeshProUGUI NikkiContent_txt;
     public string[] NikkiContent_string;
+    public GameObject NikkiContent_Yuuchan_obj;
+    public TextMeshProUGUI NikkiContent_Yuuchan_txt;
+    public string[] NikkiContent_Yuuchan_string;
 
     [Header("サウンド")]
     public AudioSource noise_sound;
@@ -159,6 +162,7 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
         //日記内容変更
+        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[3]));
         //Yuuchan表示
         yield return new WaitForSeconds(0.5f);
@@ -199,7 +203,7 @@ public class StageFourController : MonoBehaviour
         //書き込み反転
         SC.lineColor = Color.white;
         PC.isHanten_b = true;
-        
+
         //日記表示
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[4]));
@@ -209,19 +213,25 @@ public class StageFourController : MonoBehaviour
         yield return StartCoroutine(FadeIn(player_SR));
         //日記変更
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[5]));
 
-        //ユウちゃん表示
+        //ユウちゃん表示 反転はAnimatorで最初からtrueにしてる
         Yuuchan_obj.SetActive(true);
         SpriteRenderer yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
-        Color c = yuuchan_SR.color;
-        c.a = 0;
-        yuuchan_SR.color = c;
-        //ユウちゃん反転
-        YC.yuuchan_anim.SetBool("hanten", true);   
-        
-        StartCoroutine(FadeIn(yuuchan_SR)); 
-         
+        //YC.yuuchan_anim.SetBool("hanten", true);   
+        StartCoroutine(FadeIn(yuuchan_SR));
+
+        //プレイヤー操作可能
+        PC.playerCanMove_b = true;
+
+        //日記の内容変更
+        yield return new WaitForSeconds(2f);
+        //日記変更
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[6]));
+
 
         
     }
