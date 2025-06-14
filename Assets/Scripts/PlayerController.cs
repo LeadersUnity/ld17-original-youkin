@@ -145,12 +145,12 @@ public class PlayerController : MonoBehaviour
             if (stageNum == 4 && yuuchan_scr != null)
             {
                 // 連携用のマスターゲームオーバー処理を呼び出します。
-                StartCoroutine(MasterGameOver_co());
+                StartCoroutine(withYuuchanGameOver());
             }
             else
             {
                 // それ以外のステージでは、プレイヤー単独のゲームオーバー処理を呼び出します。
-                StartCoroutine(SoloGameOver_co());
+                StartCoroutine(SoloGameOver());
             }
         }
 
@@ -182,10 +182,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator SoloGameOver_co()
+    IEnumerator SoloGameOver()
     {
         
-        isGameOverRoutineRunning = true; // ★追加: コルーチン開始時にフラグを立てる
+        isGameOverRoutineRunning = true;
         playerCanMove_b = false;
 
         // Restart位置確認
@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // ★追加: ステージ4専用の、Yuuchanと連携するマスターゲームオーバー処理です。
-    IEnumerator MasterGameOver_co()
+    IEnumerator withYuuchanGameOver()
     {
         isGameOverRoutineRunning = true;
         playerCanMove_b = false;
@@ -265,6 +265,12 @@ public class PlayerController : MonoBehaviour
         // --- YuuchanのGameOver影の準備 ---
         SpriteRenderer yuuchanShadow_sr = yuuchan_scr.yuuchanGameOverShadow_obj.GetComponent<SpriteRenderer>();
         yuuchan_scr.yuuchanGameOverShadow_obj.SetActive(true);
+        if (yuuchanShadow_sr != null)
+        {
+            Color c_y = yuuchanShadow_sr.color;
+            c_y.a = 1f;
+            yuuchanShadow_sr.color = c_y;
+        }
 
         // --- 両キャラクターを同時にフェードアウト ---
         StartCoroutine(FadeOut(player_sr));
