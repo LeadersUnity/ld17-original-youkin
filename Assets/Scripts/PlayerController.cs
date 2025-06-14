@@ -32,11 +32,14 @@ public class PlayerController : MonoBehaviour
     public StageFourController SFC;
     public GameObject playerShadow_obj;
     public GameObject GameOverShadow_obj;
+    public GameObject GameOverShadow_hanten_obj;
+    public SpriteRenderer GameOverShadow_SR;
     public GameObject RestartPos_obj;
     public bool GameOver_b = false;
     public bool KarasuAttack_b = false;
     private bool isGameOverRoutineRunning = false; // ★追加: GameOverコルーチンが実行中かどうかのフラグ
-
+    [Header("パートナー情報")]
+    public YuuchanController yuuchan_scr;
 
     void Start()
     {
@@ -49,10 +52,19 @@ public class PlayerController : MonoBehaviour
                 break;
             case 4:
                 SFC = GameObject.FindWithTag("Stage4Controller").GetComponent<StageFourController>();
+                
+                // ★追加: ステージ4の場合のみ、シーン内のYuuchanを探して変数に格納します。
+                yuuchan_scr = FindObjectOfType<YuuchanController>();
+                if (yuuchan_scr == null)
+                {
+                    // 見つからなくてもエラーにはせず、警告を出すに留めます。
+                    Debug.LogWarning("ステージ4ですが、YuuchanControllerが見つかりません！");
+                }
                 break;
         }
         
         GameOverShadow_obj.SetActive(false);
+        GameOverShadow_hanten_obj.SetActive(false);
         //サウンド関連
         audioSource = GetComponent<AudioSource>();
     }
@@ -129,7 +141,17 @@ public class PlayerController : MonoBehaviour
         // ★修正点: GameOver_bがtrue かつ GameOverコルーチンが実行中でない場合のみ開始
         if (GameOver_b && !isGameOverRoutineRunning)
         {
-            StartCoroutine(GameOver());
+            // ステージ4かつ、yuuchan_scrが見つかっている場合
+            if (stageNum == 4 && yuuchan_scr != null)
+            {
+                // 連携用のマスターゲームオーバー処理を呼び出します。
+                StartCoroutine(MasterGameOver_co());
+            }
+            else
+            {
+                // それ以外のステージでは、プレイヤー単独のゲームオーバー処理を呼び出します。
+                StartCoroutine(SoloGameOver_co());
+            }
         }
 
         //プレイヤー反転
@@ -160,8 +182,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator GameOver()
+    IEnumerator SoloGameOver_co()
     {
+        
         isGameOverRoutineRunning = true; // ★追加: コルーチン開始時にフラグを立てる
         playerCanMove_b = false;
 
@@ -172,15 +195,29 @@ public class PlayerController : MonoBehaviour
         }
 
         // GameOver影の表示＋アルファ初期化
-        SpriteRenderer GameOverShadow_SR = GameOverShadow_obj.GetComponent<SpriteRenderer>();
-        if (GameOverShadow_SR != null)
+        if (!isHanten_b)
         {
-            Color c = GameOverShadow_SR.color;
-            c.a = 1f; // 完全表示
-            GameOverShadow_SR.color = c;
+            GameOverShadow_SR = GameOverShadow_obj.GetComponent<SpriteRenderer>();
         }
+        else
+        {
+            GameOverShadow_SR = GameOverShadow_hanten_obj.GetComponent<SpriteRenderer>();
+        }
+        if (GameOverShadow_SR != null || GameOverShadow_hanten_obj != null)
+            {
+                Color c = GameOverShadow_SR.color;
+                c.a = 1f; // 完全表示
+                GameOverShadow_SR.color = c;
+            }
 
-        GameOverShadow_obj.SetActive(true);
+        if (!isHanten_b)
+        {
+            GameOverShadow_obj.SetActive(true);
+        }
+        else
+        {
+            GameOverShadow_hanten_obj.SetActive(true);
+        }
         SpriteRenderer player_SR = GetComponent <SpriteRenderer>();
         yield return StartCoroutine(FadeOut(player_SR));
 
@@ -195,6 +232,88 @@ public class PlayerController : MonoBehaviour
         playerCanMove_b = true;
         GameOver_b = false;
         isGameOverRoutineRunning = false; // ★追加: コルーチン終了時にフラグを解除
+    }
+
+    // ★追加: ステージ4専用の、Yuuchanと連携するマスターゲームオーバー処理です。
+    IEnumerator MasterGameOver_co()
+    {
+        isGameOverRoutineRunning = true;
+        playerCanMove_b = false;
+
+        // --- 両キャラクターのSpriteRendererを取得 ---
+        SpriteRenderer player_sr = GetComponent<SpriteRenderer>();
+        SpriteRenderer yuuchan_sr = yuuchan_scr.GetComponent<SpriteRenderer>();
+
+        // --- PlayerのGameOver影の準備 ---
+        if (!isHanten_b)
+        {
+            GameOverShadow_SR = GameOverShadow_obj.GetComponent<SpriteRenderer>();
+            GameOverShadow_obj.SetActive(true);
+        }
+        else
+        {
+            GameOverShadow_SR = GameOverShadow_hanten_obj.GetComponent<SpriteRenderer>();
+            GameOverShadow_hanten_obj.SetActive(true);
+        }
+        if (GameOverShadow_SR != null)
+        {
+            Color c = GameOverShadow_SR.color;
+            c.a = 1f;
+            GameOverShadow_SR.color = c;
+        }
+
+        // --- YuuchanのGameOver影の準備 ---
+        SpriteRenderer yuuchanShadow_sr = yuuchan_scr.yuuchanGameOverShadow_obj.GetComponent<SpriteRenderer>();
+        yuuchan_scr.yuuchanGameOverShadow_obj.SetActive(true);
+
+        // --- 両キャラクターを同時にフェードアウト ---
+        StartCoroutine(FadeOut(player_sr));
+        yield return StartCoroutine(FadeOut(yuuchan_sr));
+
+        // --- 両キャラクターをリスポーン位置へ移動 ---
+        if (RestartPos_obj == null) RestartPos_obj = GameObject.FindWithTag("RestartPos");
+        this.transform.position = RestartPos_obj.transform.position;
+        if (yuuchan_scr.yuuchanRestartPos_obj != null)
+        {
+            yuuchan_scr.transform.position = yuuchan_scr.yuuchanRestartPos_obj.transform.position;
+        }
+
+        // --- 連携用のフェードイン処理を呼び出し ---
+        yield return StartCoroutine(FadeOutShadowsAndFadeInCharacters_co(GameOverShadow_SR, yuuchanShadow_sr, player_sr, yuuchan_sr));
+
+        // --- 状態をリセット ---
+        playerCanMove_b = true;
+        GameOver_b = false;
+        isGameOverRoutineRunning = false;
+    }
+
+    // ★追加: 2キャラ同時にフェードイン・影をフェードアウトさせる連携用コルーチンです。
+    IEnumerator FadeOutShadowsAndFadeInCharacters_co(SpriteRenderer playerShadow_sr, SpriteRenderer yuuchanShadow_sr, SpriteRenderer player_sr, SpriteRenderer yuuchan_sr)
+    {
+        float FinishTime_f = 1f;
+        float NowTime_f = 0f;
+        Color c_p_shadow = playerShadow_sr.color;
+        Color c_y_shadow = yuuchanShadow_sr.color;
+        Color c_p = player_sr.color;
+        Color c_y = yuuchan_sr.color;
+        c_p.a = 0f; c_y.a = 0f;
+        player_sr.color = c_p;
+        yuuchan_sr.color = c_y;
+        while (NowTime_f < FinishTime_f)
+        {
+            NowTime_f += Time.deltaTime;
+            float progress = NowTime_f / FinishTime_f;
+            c_p_shadow.a = Mathf.Clamp01(1 - progress); playerShadow_sr.color = c_p_shadow;
+            c_y_shadow.a = Mathf.Clamp01(1 - progress); yuuchanShadow_sr.color = c_y_shadow;
+            c_p.a = Mathf.Clamp01(progress); player_sr.color = c_p;
+            c_y.a = Mathf.Clamp01(progress); yuuchan_sr.color = c_y;
+            yield return null;
+        }
+        c_p_shadow.a = 0f; playerShadow_sr.color = c_p_shadow;
+        c_y_shadow.a = 0f; yuuchanShadow_sr.color = c_y_shadow;
+        GameOverShadow_obj.SetActive(false);
+        GameOverShadow_hanten_obj.SetActive(false);
+        if(yuuchan_scr != null) yuuchan_scr.yuuchanGameOverShadow_obj.SetActive(false);
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)

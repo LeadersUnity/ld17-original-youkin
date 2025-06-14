@@ -12,6 +12,10 @@ public class YuuchanController : MonoBehaviour
     public bool isJumping_b = false;
     [Header("プレイヤー情報")]
     public PlayerController PC;
+    [Header("ゲームオーバー関連")]
+    public GameObject yuuchanGameOverShadow_obj;
+    public GameObject yuuchanRestartPos_obj;
+    
 
     void Start()
     {
@@ -55,6 +59,24 @@ public class YuuchanController : MonoBehaviour
                 }
             }
         }
+
+        if (PC != null && PC.stageNum == 4)
+        {
+            // プレイヤーが動ける時だけ、Yuuchanも動ける
+            if (PC.playerCanMove_b)
+            {
+                // ...（ここにあった移動処理は変更なし）...
+            }
+            else // プレイヤーが動けないときはYuuchanも歩きアニメーションを止める
+            {
+                yuuchan_anim.SetBool("walk", false);
+            }
+        }
+        else if(PC == null || PC.stageNum != 4)
+        {
+            // ★追加: ステージ4以外では、安全のために歩きアニメーションを止めます。
+            yuuchan_anim.SetBool("walk", false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -64,6 +86,15 @@ public class YuuchanController : MonoBehaviour
             if (isJumping_b)
             {
                 isJumping_b = false;
+            }
+        }
+
+        if (other.gameObject.tag == "Enemy")
+        {
+            // ステージ4の場合のみ、PlayerControllerにゲームオーバーを通知する
+            if (PC != null && PC.stageNum == 4)
+            {
+                PC.GameOver_b = true;
             }
         }
     }
