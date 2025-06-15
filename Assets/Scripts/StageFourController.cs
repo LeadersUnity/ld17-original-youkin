@@ -36,6 +36,7 @@ public class StageFourController : MonoBehaviour
     //フェーズ3
     public GameObject Tree_hanten_obj;
     public GameObject TreeShadow_hanten_obj;
+    public GameObject Karasu_stand_hanten_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -83,6 +84,7 @@ public class StageFourController : MonoBehaviour
         Yuuchan_obj.SetActive(false);
         Tree_hanten_obj.SetActive(false);
         TreeShadow_hanten_obj.SetActive(false);
+        Karasu_stand_hanten_obj.SetActive(false);
         StartCoroutine(StartScene());
     }
 
