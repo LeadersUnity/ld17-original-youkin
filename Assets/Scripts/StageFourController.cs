@@ -257,6 +257,7 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer Yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(Yuuchan_SR));
         //日記の内容変更
+        yield return new WaitForSeconds(2f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[7]));
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
