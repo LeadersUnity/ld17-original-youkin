@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private bool isGameOverRoutineRunning = false; // ★追加: GameOverコルーチンが実行中かどうかのフラグ
     [Header("パートナー情報")]
     public YuuchanController yuuchan_scr;
+    public GameObject Yuuchan_obj;
 
     void Start()
     {
@@ -142,14 +143,14 @@ public class PlayerController : MonoBehaviour
         if (GameOver_b && !isGameOverRoutineRunning)
         {
             // ステージ4かつ、yuuchan_scrが見つかっている場合
-            if (stageNum == 4 && yuuchan_scr != null)
+            if (stageNum == 4 && Yuuchan_obj.activeInHierarchy)
             {
-                // 連携用のマスターゲームオーバー処理を呼び出します。
+                Debug.Log("withYuuchanGameOverを呼び出す");
                 StartCoroutine(withYuuchanGameOver());
             }
             else
             {
-                // それ以外のステージでは、プレイヤー単独のゲームオーバー処理を呼び出します。
+                Debug.Log("SoloGameOver を呼び出す");
                 StartCoroutine(SoloGameOver());
             }
         }

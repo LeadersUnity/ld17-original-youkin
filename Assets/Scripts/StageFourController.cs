@@ -37,6 +37,8 @@ public class StageFourController : MonoBehaviour
     public GameObject Tree_hanten_obj;
     public GameObject TreeShadow_hanten_obj;
     public GameObject Karasu_stand_hanten_obj;
+    public GameObject Karasu_fly_hanten_obj;
+    public GameObject karasuAttackArea_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -47,6 +49,7 @@ public class StageFourController : MonoBehaviour
     public GameObject YuuchanShadow_obj;
     public YuuchanController YC;
     [Header("その他のオブジェクト")]
+    public GameObject RestartPos_obj;
     public GameObject[] deleteArea_obj;
     public StrokeController SC;
     [Header("UI関連")]
@@ -85,7 +88,9 @@ public class StageFourController : MonoBehaviour
         Tree_hanten_obj.SetActive(false);
         TreeShadow_hanten_obj.SetActive(false);
         Karasu_stand_hanten_obj.SetActive(false);
-        StartCoroutine(StartScene());
+        Karasu_fly_hanten_obj.SetActive(false);
+        karasuAttackArea_obj.SetActive(false);
+        StartCoroutine(StartScene());   
     }
 
     private void Update() {
@@ -213,7 +218,7 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
         NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
-
+        RestartPos_obj.transform.localPosition = new Vector3(6, -6, 0);
         //プレイヤー反転
         //書き込み反転
         SC.lineColor = Color.white;
@@ -263,6 +268,9 @@ public class StageFourController : MonoBehaviour
         //ユウちゃん非表示
         SpriteRenderer Yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(Yuuchan_SR));
+        yield return new WaitForSeconds(1f);
+        Yuuchan_obj.SetActive(false);
+
         //日記の内容変更
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[7]));
@@ -273,6 +281,7 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(player_SR));
+        RestartPos_obj.transform.localPosition = new Vector3(-5f, 0.5f, 0);
 
         //KarasuTreeステージ表示
         yield return new WaitForSeconds(1f);
@@ -283,6 +292,20 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeIn(tree_SR));
         StartCoroutine(FadeIn(treeShadow_SR));
         yield return new WaitForSeconds(0.5f);
+        Karasu_stand_hanten_obj.SetActive(true);
+        SpriteRenderer karasu_stand_SR = Karasu_stand_hanten_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(karasu_stand_SR));
+        yield return new WaitForSeconds(0.5f);
+        karasuAttackArea_obj.SetActive(true);
+        Karasu_fly_hanten_obj.SetActive(true);
+        SpriteRenderer karasu_fly_SR = Karasu_fly_hanten_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(karasu_fly_SR));
+
+        //Player_obj.SetActive(true);
+        //Player表示
+        Player_obj.transform.position = new Vector3(-5.23f, 2.78f, 0);
+        StartCoroutine(FadeIn(player_SR));
+
 
     }
 
