@@ -348,18 +348,32 @@ public class StageFourController : MonoBehaviour
         TreeShadow_hanten_obj.SetActive(false);
         Karasu_stand_hanten_obj.SetActive(false);
         karasuAttackArea_obj.SetActive(false);
+        deleteArea_obj.SetActive(false);
+
+        //Player表示
+        yield return new WaitForSeconds(1f);
+        SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(player_SR));
+
+        //ResetPos変更
+        RestartPos_obj.transform.localPosition = new Vector3(5.93f, -5.44f, 0);
 
         //Riverの表示
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         River_obj.SetActive(true);
         RiverShadow_obj.SetActive(true);
         SpriteRenderer River_SR = River_obj.GetComponent<SpriteRenderer>();
         SpriteRenderer RiverShadow_SR = RiverShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeIn(River_SR));
         StartCoroutine(FadeIn(RiverShadow_SR));
+
+        //Player表示
+        Player_obj.transform.localPosition = new Vector3(5.79f, -2.91f, 0);
+        StartCoroutine(FadeIn(player_SR));
+
+        //Player移動可能
+        PC.playerCanMove_b = true;
         
-
-
     }
 
     
