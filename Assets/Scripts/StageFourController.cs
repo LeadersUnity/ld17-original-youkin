@@ -251,6 +251,7 @@ public class StageFourController : MonoBehaviour
         //YC.yuuchan_anim.SetBool("hanten", true);   
         StartCoroutine(FadeIn(yuuchan_SR));
         KarasuSpoon_obj.SetActive(false);
+
         //プレイヤー操作可能
         PC.playerCanMove_b = true;
 
@@ -269,6 +270,7 @@ public class StageFourController : MonoBehaviour
 
     IEnumerator PhaseTwo()
     {
+        Destroy(KarasuSpoon_obj);
         yield return new WaitForSeconds(1f);
         //プレイヤーの移動ストップ
         PC.playerCanMove_b = false;
@@ -348,7 +350,7 @@ public class StageFourController : MonoBehaviour
         TreeShadow_hanten_obj.SetActive(false);
         Karasu_stand_hanten_obj.SetActive(false);
         karasuAttackArea_obj.SetActive(false);
-        deleteArea_obj.SetActive(false);
+        deleteArea_obj[1].SetActive(false);
 
         //Player表示
         yield return new WaitForSeconds(1f);

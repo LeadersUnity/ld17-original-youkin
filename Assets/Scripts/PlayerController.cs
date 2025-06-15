@@ -456,6 +456,10 @@ public class PlayerController : MonoBehaviour
             {
                 SFC.stage4Num_i = 3;
             }
+            else if (other.gameObject.name == "RiverDelete_Area")
+            {
+                SFC.stage4Num_i = 4;
+            }
             
         }
 
