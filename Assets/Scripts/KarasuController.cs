@@ -75,8 +75,8 @@ public class KarasuController : MonoBehaviour
             _bStopped = true;
             StartCoroutine(ResetAfterHitPlayer());
         }
-        else if (other.gameObject.tag == "floor")
-        {
+        else{
+            
             Karasu_sound.Stop();
             _bStopped = true;
             StartCoroutine(FadeOutOnly(sr)); 

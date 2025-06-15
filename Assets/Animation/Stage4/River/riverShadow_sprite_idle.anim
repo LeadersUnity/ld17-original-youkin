@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: idle_player_hanten
+  m_Name: riverShadow_sprite_idle
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,11 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: c75b6b74ddea24ba0954dd163ef8640c, type: 3}
+      value: {fileID: 21300000, guid: eecbbd6cabae34e42a146be7136b7284, type: 3}
     - time: 0.2
-      value: {fileID: 21300000, guid: e66da9b3ece8648f4986b778f119ee69, type: 3}
+      value: {fileID: 21300000, guid: cea80c7fef7ab4e53982c54cc3bf42a0, type: 3}
     - time: 0.4
-      value: {fileID: 21300000, guid: c75b6b74ddea24ba0954dd163ef8640c, type: 3}
+      value: {fileID: 21300000, guid: eecbbd6cabae34e42a146be7136b7284, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,9 +48,9 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: c75b6b74ddea24ba0954dd163ef8640c, type: 3}
-    - {fileID: 21300000, guid: e66da9b3ece8648f4986b778f119ee69, type: 3}
-    - {fileID: 21300000, guid: c75b6b74ddea24ba0954dd163ef8640c, type: 3}
+    - {fileID: 21300000, guid: eecbbd6cabae34e42a146be7136b7284, type: 3}
+    - {fileID: 21300000, guid: cea80c7fef7ab4e53982c54cc3bf42a0, type: 3}
+    - {fileID: 21300000, guid: eecbbd6cabae34e42a146be7136b7284, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

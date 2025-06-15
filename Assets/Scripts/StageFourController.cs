@@ -39,6 +39,8 @@ public class StageFourController : MonoBehaviour
     public GameObject Karasu_stand_hanten_obj;
     public GameObject Karasu_fly_hanten_obj;
     public GameObject karasuAttackArea_obj;
+    public GameObject River_obj;
+    public GameObject RiverShadow_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -90,6 +92,8 @@ public class StageFourController : MonoBehaviour
         Karasu_stand_hanten_obj.SetActive(false);
         Karasu_fly_hanten_obj.SetActive(false);
         karasuAttackArea_obj.SetActive(false);
+        River_obj.SetActive(false);
+        RiverShadow_obj.SetActive(false);
         StartCoroutine(StartScene());   
     }
 
@@ -102,8 +106,12 @@ public class StageFourController : MonoBehaviour
                 stage4Num_i = 0;
                 break;
             case 2:
-            StartCoroutine(PhaseTwo());
+                StartCoroutine(PhaseTwo());
                 //deleteArea_obj[1].SetActive(true);
+                stage4Num_i = 0;
+                break;
+            case 3:
+                StartCoroutine(PhaseThree());
                 stage4Num_i = 0;
                 break;
         }
@@ -242,7 +250,7 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
         //YC.yuuchan_anim.SetBool("hanten", true);   
         StartCoroutine(FadeIn(yuuchan_SR));
-
+        KarasuSpoon_obj.SetActive(false);
         //プレイヤー操作可能
         PC.playerCanMove_b = true;
 
@@ -300,11 +308,56 @@ public class StageFourController : MonoBehaviour
         Karasu_fly_hanten_obj.SetActive(true);
         SpriteRenderer karasu_fly_SR = Karasu_fly_hanten_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeIn(karasu_fly_SR));
+        
+        
 
         //Player_obj.SetActive(true);
         //Player表示
+        yield return new WaitForSeconds(1.5f);
         Player_obj.transform.position = new Vector3(-5.23f, 2.78f, 0);
         StartCoroutine(FadeIn(player_SR));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[8]));
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[9]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+        deleteArea_obj[1].SetActive(true);
+        //プレイヤー移動可能
+        PC.playerCanMove_b = true;
+
+    }
+
+    IEnumerator PhaseThree()
+    {
+        yield return new WaitForSeconds(1f);
+        //プレイヤーの移動ストップ
+        PC.playerCanMove_b = false;
+        PC.player_anim.SetBool("walk", false);
+
+        //Tree非表示
+        yield return new WaitForSeconds(1f);
+        SpriteRenderer tree_SR = Tree_hanten_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer treeShadow_SR = TreeShadow_hanten_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer karasu_stand_SR = Karasu_stand_hanten_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(tree_SR));
+        StartCoroutine(FadeOut(treeShadow_SR));
+        StartCoroutine(FadeOut(karasu_stand_SR));
+        yield return new WaitForSeconds(1.2f);
+        Tree_hanten_obj.SetActive(false);
+        TreeShadow_hanten_obj.SetActive(false);
+        Karasu_stand_hanten_obj.SetActive(false);
+        karasuAttackArea_obj.SetActive(false);
+
+        //Riverの表示
+        yield return new WaitForSeconds(1f);
+        River_obj.SetActive(true);
+        RiverShadow_obj.SetActive(true);
+        SpriteRenderer River_SR = River_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer RiverShadow_SR = RiverShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(River_SR));
+        StartCoroutine(FadeIn(RiverShadow_SR));
+        
 
 
     }

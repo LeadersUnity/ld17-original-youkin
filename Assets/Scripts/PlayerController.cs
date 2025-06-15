@@ -452,6 +452,11 @@ public class PlayerController : MonoBehaviour
             {
                 SFC.stage4Num_i = 1;
             }
+            else if (other.gameObject.name == "TreeHantenDelete_Area")
+            {
+                SFC.stage4Num_i = 3;
+            }
+            
         }
 
 
