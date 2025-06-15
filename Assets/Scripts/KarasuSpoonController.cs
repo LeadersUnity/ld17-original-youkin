@@ -11,6 +11,8 @@ public class KarasuSpoonController : MonoBehaviour
     public GameObject NikkiContent_Yuuchan_obj;
     public TextMeshProUGUI NikkiContent_Yuuchan_txt;
     public string[] NikkiContent_Yuuchan_string;
+    //public TMP_FontAsset Yuuchan_font;
+    //public TMP_FontAsset Player_font;
     [Header("サウンド")]
     public AudioSource writing_sound;
     [Header("プレイヤー情報")]
@@ -19,11 +21,14 @@ public class KarasuSpoonController : MonoBehaviour
     // 内部管理用変数
     private Coroutine runningSpoonCoroutine;
     private bool isResetting = false;
+    [Header("その他の情報")]
+    public StageFourController SFC;
 
     void Start()
     {
         // プレイヤーコントローラーの参照を取得
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        SFC = GameObject.FindWithTag("Stage4Controller").GetComponent<StageFourController>();
         if (PC == null)
         {
             Debug.LogError("PlayerControllerが見つかりません！");
@@ -77,34 +82,38 @@ public class KarasuSpoonController : MonoBehaviour
         {
             if (karasu != null) karasu.SetActive(false);
         }
+        NikkiContent_Yuuchan_obj.SetActive(true);
         yield return new WaitForSeconds(3.0f);
         // --- ここから出現シーケンス ---
         yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[0]));
         yield return new WaitForSeconds(2.0f);
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         yield return new WaitForSeconds(1.0f);
-
         //カラス１
         karasuPrefabs[0].transform.localPosition = new Vector3(0, 0, 0);
         karasuPrefabs[0].SetActive(true);
 
         //カラス2
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(1.0f);
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[1]));
+        yield return new WaitForSeconds(2.0f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return new WaitForSeconds(2.0f);
         karasuPrefabs[1].transform.localPosition = new Vector3(-11.43f, 2.33f, 0);
         karasuPrefabs[1].SetActive(true);
 
         //カラス3
         yield return new WaitForSeconds(2.0f);
-        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[1]));
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[2]));
         yield return new WaitForSeconds(2.0f);
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         yield return new WaitForSeconds(2.0f);
         karasuPrefabs[2].transform.localPosition = new Vector3(-8.65f, 1.83f, 0);
         karasuPrefabs[2].SetActive(true);
 
-        
+
         yield return new WaitForSeconds(3.0f);
-        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[2]));
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[3]));
         yield return new WaitForSeconds(2.0f);
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         yield return new WaitForSeconds(2.0f);
@@ -114,7 +123,7 @@ public class KarasuSpoonController : MonoBehaviour
         karasuPrefabs[4].SetActive(true);
 
         yield return new WaitForSeconds(3f);
-        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[3]));
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[4]));
         yield return new WaitForSeconds(2.0f);
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         yield return new WaitForSeconds(2.0f);
@@ -122,6 +131,12 @@ public class KarasuSpoonController : MonoBehaviour
         karasuPrefabs[5].SetActive(true);
         karasuPrefabs[6].transform.localPosition = new Vector3(-5.95f, 1.64f, 0);
         karasuPrefabs[6].SetActive(true);
+        yield return new WaitForSeconds(5.0f);
+        yield return StartCoroutine(KakuText(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[5]));
+        yield return new WaitForSeconds(2.0f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        NikkiContent_Yuuchan_obj.SetActive(false);
+        SFC.stage4Num_i = 2;
     }
 
     IEnumerator KakuText(TextMeshProUGUI targetText, string content)

@@ -89,6 +89,11 @@ public class StageFourController : MonoBehaviour
                 //deleteArea_obj[1].SetActive(true);
                 stage4Num_i = 0;
                 break;
+            case 2:
+            StartCoroutine(PhaseTwo());
+                //deleteArea_obj[1].SetActive(true);
+                stage4Num_i = 0;
+                break;
         }
     }
 
@@ -209,6 +214,7 @@ public class StageFourController : MonoBehaviour
 
         //日記表示
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
+        yield return new WaitForSeconds(1f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[4]));
         yield return new WaitForSeconds(2f);
 
@@ -237,10 +243,26 @@ public class StageFourController : MonoBehaviour
 
         //カラス始動
         KarasuSpoon_obj.SetActive(true);
-
-
-        
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
     }
+
+    IEnumerator PhaseTwo()
+    {
+        yield return new WaitForSeconds(1f);
+        //プレイヤーの移動ストップ
+        PC.playerCanMove_b = false;
+        PC.player_anim.SetBool("walk", false);
+        //ユウちゃん非表示
+        SpriteRenderer Yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(Yuuchan_SR));
+        //日記の内容変更
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[7]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+    }
+
+    
 
     IEnumerator FadeIn(SpriteRenderer SR)
     {
