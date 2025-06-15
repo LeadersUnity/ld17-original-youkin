@@ -33,6 +33,9 @@ public class StageFourController : MonoBehaviour
     //フェーズ２
     public GameObject KarasuSpoon_obj;
     public GameObject background_obj;
+    //フェーズ3
+    public GameObject Tree_hanten_obj;
+    public GameObject TreeShadow_hanten_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -78,6 +81,8 @@ public class StageFourController : MonoBehaviour
         Yuuchan_hanten_half_obj.SetActive(false);
         background_obj.SetActive(false);
         Yuuchan_obj.SetActive(false);
+        Tree_hanten_obj.SetActive(false);
+        TreeShadow_hanten_obj.SetActive(false);
         StartCoroutine(StartScene());
     }
 
@@ -261,6 +266,22 @@ public class StageFourController : MonoBehaviour
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[7]));
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+
+        //プレイヤー非表示
+        yield return new WaitForSeconds(2f);
+        SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(player_SR));
+
+        //KarasuTreeステージ表示
+        yield return new WaitForSeconds(1f);
+        Tree_hanten_obj.SetActive(true);
+        TreeShadow_hanten_obj.SetActive(true);
+        SpriteRenderer tree_SR = Tree_hanten_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer treeShadow_SR = TreeShadow_hanten_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(tree_SR));
+        StartCoroutine(FadeIn(treeShadow_SR));
+        yield return new WaitForSeconds(0.5f);
+
     }
 
     
