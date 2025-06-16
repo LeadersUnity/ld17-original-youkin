@@ -98,6 +98,7 @@ public class StageFourController : MonoBehaviour
         RiverShadow_obj.SetActive(false);
         Oka_obj.SetActive(false);
         OkaShadow_obj.SetActive(false);
+        Player_obj.transform.position = new Vector3(-5.87f, -2.91f, 0);
         StartCoroutine(StartScene());   
     }
 
@@ -414,10 +415,8 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeIn(Oka_SR));
         StartCoroutine(FadeIn(OkaShadow_SR));
 
-
     }
 
-    
 
     IEnumerator FadeIn(SpriteRenderer SR)
     {
