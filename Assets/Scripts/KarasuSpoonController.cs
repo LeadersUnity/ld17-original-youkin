@@ -118,8 +118,8 @@ public class KarasuSpoonController : MonoBehaviour
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         yield return new WaitForSeconds(2.0f);
         karasuPrefabs[3].transform.localPosition = new Vector3(-11.77f, -4.67f, 0);
-        karasuPrefabs[3].SetActive(true);
-        karasuPrefabs[4].transform.localPosition = new Vector3(0.32f, -4.86f, 0);
+        karasuPrefabs[3].SetActive(true);   
+        karasuPrefabs[4].transform.localPosition = new Vector3(-0.69f, -4.38f, 0);
         karasuPrefabs[4].SetActive(true);
 
         yield return new WaitForSeconds(3f);

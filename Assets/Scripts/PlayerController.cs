@@ -461,6 +461,7 @@ public class PlayerController : MonoBehaviour
                 SFC.stage4Num_i = 4;
             }
             
+            other.gameObject.SetActive(false);
         }
 
 

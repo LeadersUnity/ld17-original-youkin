@@ -41,6 +41,8 @@ public class StageFourController : MonoBehaviour
     public GameObject karasuAttackArea_obj;
     public GameObject River_obj;
     public GameObject RiverShadow_obj;
+    public GameObject Oka_obj;
+    public GameObject OkaShadow_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -94,6 +96,8 @@ public class StageFourController : MonoBehaviour
         karasuAttackArea_obj.SetActive(false);
         River_obj.SetActive(false);
         RiverShadow_obj.SetActive(false);
+        Oka_obj.SetActive(false);
+        OkaShadow_obj.SetActive(false);
         StartCoroutine(StartScene());   
     }
 
@@ -112,6 +116,10 @@ public class StageFourController : MonoBehaviour
                 break;
             case 3:
                 StartCoroutine(PhaseThree());
+                stage4Num_i = 0;
+                break;
+            case 4:
+                StartCoroutine(PhaseFour());
                 stage4Num_i = 0;
                 break;
         }
@@ -376,6 +384,16 @@ public class StageFourController : MonoBehaviour
         //Player移動可能
         PC.playerCanMove_b = true;
         
+    }
+
+    IEnumerator PhaseFour()
+    {
+        //player操作不可
+        PC.player_anim.SetBool("walk", false);
+        PC.playerCanMove_b = false;
+        yield return new WaitForSeconds(1f);
+        Debug.Log("最終フェーズ");
+        //
     }
 
     
