@@ -369,6 +369,7 @@ public class StageFourController : MonoBehaviour
         RestartPos_obj.transform.localPosition = new Vector3(5.93f, -5.44f, 0);
 
         //Riverの表示
+        deleteArea_obj[2].SetActive(true);
         yield return new WaitForSeconds(2f);
         River_obj.SetActive(true);
         RiverShadow_obj.SetActive(true);
@@ -393,7 +394,27 @@ public class StageFourController : MonoBehaviour
         PC.playerCanMove_b = false;
         yield return new WaitForSeconds(1f);
         Debug.Log("最終フェーズ");
-        //
+        //Riverステージ全消し
+        River_obj.SetActive(true);
+        RiverShadow_obj.SetActive(true);
+        SpriteRenderer River_SR = River_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer RiverShadow_SR = RiverShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(River_SR));
+        StartCoroutine(FadeOut(RiverShadow_SR));
+        yield return new WaitForSeconds(1f);
+        River_obj.SetActive(false);
+        RiverShadow_obj.SetActive(false);
+
+        //丘表示
+        yield return new WaitForSeconds(1f);
+        Oka_obj.SetActive(true);
+        OkaShadow_obj.SetActive(true);
+        SpriteRenderer Oka_SR = Oka_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer OkaShadow_SR = OkaShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(Oka_SR));
+        StartCoroutine(FadeIn(OkaShadow_SR));
+
+
     }
 
     
