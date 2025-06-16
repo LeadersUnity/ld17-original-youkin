@@ -226,15 +226,15 @@ public class StageFourController : MonoBehaviour
         //日記フェードアウト
         StartCoroutine(FadeOutText(Date_txt));
         StartCoroutine(FadeOutText(NikkiContent_txt));
-
+        //NikkiContent_txt.text = " ";
         //フェード2
         yield return new WaitForSeconds(1f);
+        NikkiContent_txt.text = " ";
         background_obj.SetActive(true);
         SpriteRenderer background_SR = background_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(background_SR));
         yield return new WaitForSeconds(1f);
-        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
-        NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
+        
         RestartPos_obj.transform.localPosition = new Vector3(6, -6, 0);
         //プレイヤー反転
         //書き込み反転
@@ -242,6 +242,16 @@ public class StageFourController : MonoBehaviour
         PC.isHanten_b = true;
 
         //日記表示
+        // テキストのメインカラーを白に設定
+        Date_txt.color = textColor_white;
+        NikkiContent_txt.color = textColor_white;
+        // Date_txtのマテリアルカラーを白に設定
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor_white); // ← Faceカラーの追加
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
+        // NikkiContent_txtのマテリアルカラーを白に設定
+        NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor_white); // ← Faceカラーの追加
+        NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_white);
+
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[4]));
@@ -319,11 +329,12 @@ public class StageFourController : MonoBehaviour
         Karasu_fly_hanten_obj.SetActive(true);
         SpriteRenderer karasu_fly_SR = Karasu_fly_hanten_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeIn(karasu_fly_SR));
-        
-        
+
+
 
         //Player_obj.SetActive(true);
         //Player表示
+        PC.player_anim.SetBool("yuuchanMix", true);
         yield return new WaitForSeconds(1.5f);
         Player_obj.transform.position = new Vector3(-5.23f, 2.78f, 0);
         StartCoroutine(FadeIn(player_SR));
@@ -394,7 +405,11 @@ public class StageFourController : MonoBehaviour
         PC.player_anim.SetBool("walk", false);
         PC.playerCanMove_b = false;
         yield return new WaitForSeconds(1f);
+        //プレイヤー非表示
+        SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(player_SR));
         Debug.Log("最終フェーズ");
+
         //Riverステージ全消し
         River_obj.SetActive(true);
         RiverShadow_obj.SetActive(true);
@@ -414,6 +429,13 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer OkaShadow_SR = OkaShadow_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeIn(Oka_SR));
         StartCoroutine(FadeIn(OkaShadow_SR));
+
+        yield return new WaitForSeconds(1f);
+        Player_obj.transform.position = new Vector3(-5.53f, -0.3f, 0);
+        StartCoroutine(FadeIn(player_SR));
+
+
+
 
     }
 

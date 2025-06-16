@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public float jumpPower_f = 50;
     public bool isJumping_b = false;
     [Header("サウンド関連")]
-    AudioSource audioSource;
+    public AudioSource audioSource;
     public AudioClip walk_sound;
 
     [Header("その他の情報")]
@@ -65,9 +65,12 @@ public class PlayerController : MonoBehaviour
         }
         
         GameOverShadow_obj.SetActive(false);
-        GameOverShadow_hanten_obj.SetActive(false);
+        if (GameOverShadow_hanten_obj != null)
+        {
+            GameOverShadow_hanten_obj.SetActive(false);
+        }
         //サウンド関連
-        audioSource = GetComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -143,7 +146,7 @@ public class PlayerController : MonoBehaviour
         if (GameOver_b && !isGameOverRoutineRunning)
         {
             // ステージ4かつ、yuuchan_scrが見つかっている場合
-            if (stageNum == 4 && Yuuchan_obj.activeInHierarchy)
+            if (stageNum == 4 && Yuuchan_obj != null && Yuuchan_obj.activeInHierarchy )
             {
                 Debug.Log("withYuuchanGameOverを呼び出す");
                 StartCoroutine(withYuuchanGameOver());
@@ -460,7 +463,7 @@ public class PlayerController : MonoBehaviour
             {
                 SFC.stage4Num_i = 4;
             }
-            
+
             other.gameObject.SetActive(false);
         }
 

@@ -141,7 +141,7 @@ public class KarasuHantenController : MonoBehaviour
             karasu_SR.color = c;
             yield return null;
         }
-    }
+    }   
 
     // フェードアウト演出
     IEnumerator FadeOut()
