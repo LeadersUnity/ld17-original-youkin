@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case 4:
                 SFC = GameObject.FindWithTag("Stage4Controller").GetComponent<StageFourController>();
-                
+
                 // ★追加: ステージ4の場合のみ、シーン内のYuuchanを探して変数に格納します。
                 yuuchan_scr = FindObjectOfType<YuuchanController>();
                 if (yuuchan_scr == null)
@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
                     Debug.LogWarning("ステージ4ですが、YuuchanControllerが見つかりません！");
                 }
                 break;
+            
         }
         
         GameOverShadow_obj.SetActive(false);
@@ -484,6 +485,14 @@ public class PlayerController : MonoBehaviour
             else if (other.gameObject.name == "RiverDelete_Area")
             {
                 SFC.stage4Num_i = 4;
+            }
+            else if (other.gameObject.name == "OkaDelete_Area")
+            {
+                SFC.stage4Num_i = 5;
+            }
+            else if (other.gameObject.name == "bedDelete_Area")
+            {
+                SFC.stage4Num_i = 6;
             }
 
             other.gameObject.SetActive(false);

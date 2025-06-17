@@ -43,8 +43,8 @@ public class StageFourController : MonoBehaviour
     public GameObject RiverShadow_obj;
     public GameObject Oka_obj;
     public GameObject OkaShadow_obj;
-    public GameObject Bed_obj;
-    public GameObject BedShadow_obj;
+    public GameObject Bed_hanten_obj;
+    public GameObject BedShadow_hanten_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -101,8 +101,8 @@ public class StageFourController : MonoBehaviour
         Oka_obj.SetActive(false);
         OkaShadow_obj.SetActive(false);
         Player_obj.transform.position = new Vector3(-5.87f, -2.91f, 0);
-        Bed_obj.SetActive(false);
-        BedShadow_obj.SetActive(false);
+        Bed_hanten_obj.SetActive(false);
+        BedShadow_hanten_obj.SetActive(false); 
         StartCoroutine(StartScene());   
     }
 
@@ -125,6 +125,10 @@ public class StageFourController : MonoBehaviour
                 break;
             case 4:
                 StartCoroutine(PhaseFour());
+                stage4Num_i = 0;
+                break;
+            case 5:
+                StartCoroutine(PhaseFive());
                 stage4Num_i = 0;
                 break;
         }
@@ -439,11 +443,33 @@ public class StageFourController : MonoBehaviour
         Player_obj.transform.position = new Vector3(-5.53f, -0.3f, 0);
         Player_obj.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
         yield return StartCoroutine(FadeIn(player_SR));
-
+        deleteArea_obj[3].SetActive(true);
         //プレイヤー移動可能
         yield return new WaitForSeconds(1f);
         PC.playerCanMove_b = true;
         
+    }
+
+    IEnumerator PhaseFive()
+    {
+        yield return new WaitForSeconds(0);
+        //丘の非表示
+        SpriteRenderer Oka_SR = Oka_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer OkaShadow_SR = OkaShadow_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(Oka_SR));
+        StartCoroutine(FadeOut(OkaShadow_SR));
+        yield return new WaitForSeconds(1f);
+        Oka_obj.SetActive(false);
+        OkaShadow_obj.SetActive(false);
+
+        //ベッドの表示
+        yield return new WaitForSeconds(1f);
+        Bed_hanten_obj.SetActive(true);
+        BedShadow_hanten_obj.SetActive(true);
+        SpriteRenderer Bed_hanten_SR = Bed_hanten_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer BedShadow_hanten_SR = BedShadow_hanten_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(Bed_hanten_SR));
+        StartCoroutine(FadeIn(BedShadow_hanten_SR));
     }
 
 
