@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool AorDCan_b;
     public bool jumpCan_b;
     public bool KakikomuCan_b;
-    public float walkSpeed_f = 2;
+    public float walkSpeed_f = 0.0015f;
     public float jumpPower_f = 50;
     public bool isJumping_b = false;
     [Header("サウンド関連")]
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
             if (AorDCan_b)
             {
                 bool isMoving = false;
-
+                /*
                 if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
                 {
                     this.transform.position += new Vector3(walkSpeed_f, 0, 0);
@@ -92,6 +92,28 @@ public class PlayerController : MonoBehaviour
                 else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                 {
                     this.transform.position += new Vector3(-walkSpeed_f, 0, 0);
+                    this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
+                    player_anim.SetBool("walk", true);
+                    isMoving = true;
+                }
+                else
+                {
+                    player_anim.SetBool("walk", false);
+                }
+                */
+                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                {
+                    // ★★★ 対策 ★★★
+                    // Time.deltaTimeを掛けてフレームレートに依存しないようにする
+                    this.transform.position += new Vector3(walkSpeed_f * Time.deltaTime, 0, 0);
+                    this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+                    player_anim.SetBool("walk", true);
+                    isMoving = true;
+                }
+                else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                {
+                    // ★★★ 対策 ★★★
+                    this.transform.position += new Vector3(-walkSpeed_f * Time.deltaTime, 0, 0);
                     this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
                     player_anim.SetBool("walk", true);
                     isMoving = true;

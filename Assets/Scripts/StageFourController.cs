@@ -431,12 +431,15 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeIn(OkaShadow_SR));
 
         yield return new WaitForSeconds(1f);
+        PC.player_anim.SetBool("yuuchan", true);
         Player_obj.transform.position = new Vector3(-5.53f, -0.3f, 0);
-        StartCoroutine(FadeIn(player_SR));
+        Player_obj.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        yield return StartCoroutine(FadeIn(player_SR));
 
-
-
-
+        //プレイヤー移動可能
+        yield return new WaitForSeconds(1f);
+        PC.playerCanMove_b = true;
+        
     }
 
 

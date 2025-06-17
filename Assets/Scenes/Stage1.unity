@@ -1869,7 +1869,7 @@ MonoBehaviour:
   AorDCan_b: 0
   jumpCan_b: 0
   KakikomuCan_b: 0
-  walkSpeed_f: 0.0012
+  walkSpeed_f: 1
   jumpPower_f: 250
   isJumping_b: 0
   audioSource: {fileID: 0}

@@ -379,8 +379,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -460,7 +460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 285, y: 285}
+  m_AnchoredPosition: {x: -92, y: 107}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &283773342
@@ -2368,7 +2368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yuuchan_anim: {fileID: 0}
   Yuuchan_rb: {fileID: 0}
-  walkSpeed_f: 0.0015
+  walkSpeed_f: 1
   jumpPower_f: 250
   isJumping_b: 0
   PC: {fileID: 0}
@@ -2760,7 +2760,7 @@ MonoBehaviour:
   AorDCan_b: 0
   jumpCan_b: 0
   KakikomuCan_b: 0
-  walkSpeed_f: 0.0015
+  walkSpeed_f: 1
   jumpPower_f: 250
   isJumping_b: 0
   audioSource: {fileID: 0}

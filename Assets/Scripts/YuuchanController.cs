@@ -30,6 +30,7 @@ public class YuuchanController : MonoBehaviour
     {
         if (PC.playerCanMove_b)
         {
+            /*
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             {
                 this.transform.position += new Vector3(-walkSpeed_f, 0, 0);
@@ -40,6 +41,28 @@ public class YuuchanController : MonoBehaviour
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
                 this.transform.position += new Vector3(walkSpeed_f, 0, 0);
+                this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+                yuuchan_anim.SetBool("walk", true);
+                //isMoving = true;
+            }
+            else
+            {
+                yuuchan_anim.SetBool("walk", false);
+            }*/
+            
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                // ★★★ 対策 ★★★
+                // Time.deltaTimeを掛けてフレームレートに依存しないようにする
+                this.transform.position += new Vector3(-walkSpeed_f * Time.deltaTime, 0, 0);
+                this.transform.localScale = new Vector3(-0.15f, 0.15f, 0.15f);
+                yuuchan_anim.SetBool("walk", true);
+                //isMoving = true;
+            }
+            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                // ★★★ 対策 ★★★
+                this.transform.position += new Vector3(walkSpeed_f * Time.deltaTime, 0, 0);
                 this.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
                 yuuchan_anim.SetBool("walk", true);
                 //isMoving = true;
