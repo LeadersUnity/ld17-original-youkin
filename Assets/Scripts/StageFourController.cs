@@ -43,6 +43,8 @@ public class StageFourController : MonoBehaviour
     public GameObject RiverShadow_obj;
     public GameObject Oka_obj;
     public GameObject OkaShadow_obj;
+    public GameObject Bed_obj;
+    public GameObject BedShadow_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -99,6 +101,8 @@ public class StageFourController : MonoBehaviour
         Oka_obj.SetActive(false);
         OkaShadow_obj.SetActive(false);
         Player_obj.transform.position = new Vector3(-5.87f, -2.91f, 0);
+        Bed_obj.SetActive(false);
+        BedShadow_obj.SetActive(false);
         StartCoroutine(StartScene());   
     }
 
