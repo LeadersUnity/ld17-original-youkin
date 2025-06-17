@@ -45,6 +45,7 @@ public class StageFourController : MonoBehaviour
     public GameObject OkaShadow_obj;
     public GameObject Bed_hanten_obj;
     public GameObject BedShadow_hanten_obj;
+    public GameObject Yuuchan_inbed_obj;
 
     [Header("プレイヤー情報")]
     public GameObject Player_obj;
@@ -102,7 +103,8 @@ public class StageFourController : MonoBehaviour
         OkaShadow_obj.SetActive(false);
         Player_obj.transform.position = new Vector3(-5.87f, -2.91f, 0);
         Bed_hanten_obj.SetActive(false);
-        BedShadow_hanten_obj.SetActive(false); 
+        BedShadow_hanten_obj.SetActive(false);
+        Yuuchan_inbed_obj.SetActive(false);
         StartCoroutine(StartScene());   
     }
 
@@ -129,6 +131,10 @@ public class StageFourController : MonoBehaviour
                 break;
             case 5:
                 StartCoroutine(PhaseFive());
+                stage4Num_i = 0;
+                break;
+            case 6:
+                StartCoroutine(PhaseSix());
                 stage4Num_i = 0;
                 break;
         }
@@ -461,15 +467,70 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Oka_obj.SetActive(false);
         OkaShadow_obj.SetActive(false);
+        PC.walkSpeed_f = 0.5f;
 
         //ベッドの表示
+        deleteArea_obj[4].SetActive(true);
         yield return new WaitForSeconds(1f);
         Bed_hanten_obj.SetActive(true);
         BedShadow_hanten_obj.SetActive(true);
         SpriteRenderer Bed_hanten_SR = Bed_hanten_obj.GetComponent<SpriteRenderer>();
         SpriteRenderer BedShadow_hanten_SR = BedShadow_hanten_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeIn(Bed_hanten_SR));
-        StartCoroutine(FadeIn(BedShadow_hanten_SR));
+        StartCoroutine(FadeIn(BedShadow_hanten_SR));    
+        
+    }
+
+    IEnumerator PhaseSix()
+    {
+        //プレイヤー操作不可
+        PC.player_anim.SetBool("walk", false);
+        PC.playerCanMove_b = false;
+        yield return new WaitForSeconds(0f);
+        SpriteRenderer Player_SR = Player_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(Player_SR));
+
+        yield return new WaitForSeconds(2f);
+        //background非表示
+        SpriteRenderer background_SR = background_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer bed_hanten_SR = Bed_hanten_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer bedShadow_hanten_SR = BedShadow_hanten_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(background_SR));
+        StartCoroutine(FadeOut(bed_hanten_SR));
+        StartCoroutine(FadeOut(bedShadow_hanten_SR));
+
+        room_obj.SetActive(true);
+        roomShadow_obj.SetActive(true);
+        bed_Bokuin_obj.SetActive(true);
+        SpriteRenderer room_SR = room_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer roomShadow_SR = roomShadow_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer Bed_bokuIn_SR = bed_Bokuin_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeIn(room_SR));
+        StartCoroutine(FadeIn(roomShadow_SR));
+        StartCoroutine(FadeIn(Bed_bokuIn_SR));
+
+        Date_txt.color = textColor_black;
+        NikkiContent_txt.color = textColor_black;
+        // Date_txtのマテリアルカラーを白に設定
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor_black); // ← Faceカラーの追加
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
+        // NikkiContent_txtのマテリアルカラーを白に設定
+        NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor_black); // ← Faceカラーの追加
+        NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
+
+        yield return new WaitForSeconds(2f);
+        Yuuchan_inbed_obj.SetActive(true);
+        SpriteRenderer Yuuchan_inBed_SR = Yuuchan_inbed_obj.GetComponent<SpriteRenderer>();
+        yield return StartCoroutine(FadeIn(Yuuchan_inBed_SR));
+
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeOut(room_SR));
+        StartCoroutine(FadeOut(roomShadow_SR));
+        StartCoroutine(FadeOut(Bed_bokuIn_SR));
+        StartCoroutine(FadeOutText(Date_txt));
+        StartCoroutine(FadeOutText(Yuuchan_inBed_SR));
+        StartCoroutine(FadeOutText(NikkiContent_txt));
+        
     }
 
 

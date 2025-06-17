@@ -15,6 +15,7 @@ TagManager:
   - Stage4Controller
   - Stage4_Area
   - StrokeController
+  - Oka_delete
   layers:
   - Default
   - TransparentFX
