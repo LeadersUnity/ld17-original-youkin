@@ -23,6 +23,7 @@ public class StageFourController : MonoBehaviour
     [Header("サウンド")]
     public AudioSource noise_sound;
     public AudioSource writing_sound;
+    public AudioSource writing_Yuuchan_sound;
     [Header("ステージ4オブジェクト")]
     public GameObject room_obj;
     public GameObject bed_obj;
@@ -68,8 +69,8 @@ public class StageFourController : MonoBehaviour
     {
         //UI情報
         text_mat = Date_obj.GetComponent<Material>();
-        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black );
-        SC = GameObject.FindWithTag( "StrokeController" ).GetComponent<StrokeController>();
+        Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
+        SC = GameObject.FindWithTag("StrokeController").GetComponent<StrokeController>();
         for (int i = 0; i < 10; i++)
         {
             if (deleteArea_obj[i] != null)
@@ -105,10 +106,11 @@ public class StageFourController : MonoBehaviour
         Bed_hanten_obj.SetActive(false);
         BedShadow_hanten_obj.SetActive(false);
         Yuuchan_inbed_obj.SetActive(false);
-        StartCoroutine(StartScene());   
+        StartCoroutine(StartScene());
     }
 
-    private void Update() {
+    private void Update()
+    {
         switch (stage4Num_i)
         {
             case 1:
@@ -144,7 +146,7 @@ public class StageFourController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         //Debug.Log("ゲームが始まる");
-        
+
         Date_obj.SetActive(true);
         //日付表示
         yield return StartCoroutine(KakuText(Date_txt, Date_string[0]));
@@ -185,7 +187,7 @@ public class StageFourController : MonoBehaviour
         PC.AorDCan_b = true;
         PC.jumpCan_b = true;
         PC.KakikomuCan_b = true;
-        
+
     }
 
     IEnumerator PhaseOne()
@@ -248,7 +250,7 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer background_SR = background_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(background_SR));
         yield return new WaitForSeconds(1f);
-        
+
         RestartPos_obj.transform.localPosition = new Vector3(6, -6, 0);
         //プレイヤー反転
         //書き込み反転
@@ -359,8 +361,23 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(FadeOutText(NikkiContent_txt));
         deleteArea_obj[1].SetActive(true);
+
         //プレイヤー移動可能
+        //PC.playerCanMove_b = true;
+
+        NikkiContent_Yuuchan_obj.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[0]));
+        yield return new WaitForSeconds(0.8f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[1]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         PC.playerCanMove_b = true;
+        yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[10]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_txt));
+
 
     }
 
@@ -391,6 +408,7 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer player_SR = Player_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(player_SR));
 
+       
         //ResetPos変更
         RestartPos_obj.transform.localPosition = new Vector3(5.93f, -5.44f, 0);
 
@@ -404,13 +422,23 @@ public class StageFourController : MonoBehaviour
         StartCoroutine(FadeIn(River_SR));
         StartCoroutine(FadeIn(RiverShadow_SR));
 
+        //日記変更
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[2]));
+        yield return new WaitForSeconds(0.8f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[3]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+
+
         //Player表示
         Player_obj.transform.localPosition = new Vector3(5.79f, -2.91f, 0);
         StartCoroutine(FadeIn(player_SR));
 
         //Player移動可能
         PC.playerCanMove_b = true;
-        
+
     }
 
     IEnumerator PhaseFour()
@@ -450,10 +478,19 @@ public class StageFourController : MonoBehaviour
         Player_obj.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
         yield return StartCoroutine(FadeIn(player_SR));
         deleteArea_obj[3].SetActive(true);
+
+        //日記内容変更
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[4]));
+        yield return new WaitForSeconds(0.8f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[5]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
         //プレイヤー移動可能
         yield return new WaitForSeconds(1f);
         PC.playerCanMove_b = true;
-        
+
     }
 
     IEnumerator PhaseFive()
@@ -467,7 +504,17 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Oka_obj.SetActive(false);
         OkaShadow_obj.SetActive(false);
-        PC.walkSpeed_f = 0.5f;
+        PC.walkSpeed_f = 0.2f;
+
+        
+        //日記内容変更
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[6]));
+        yield return new WaitForSeconds(0.8f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[7]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
 
         //ベッドの表示
         deleteArea_obj[4].SetActive(true);
@@ -477,8 +524,8 @@ public class StageFourController : MonoBehaviour
         SpriteRenderer Bed_hanten_SR = Bed_hanten_obj.GetComponent<SpriteRenderer>();
         SpriteRenderer BedShadow_hanten_SR = BedShadow_hanten_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeIn(Bed_hanten_SR));
-        StartCoroutine(FadeIn(BedShadow_hanten_SR));    
-        
+        StartCoroutine(FadeIn(BedShadow_hanten_SR));
+
     }
 
     IEnumerator PhaseSix()
@@ -489,7 +536,7 @@ public class StageFourController : MonoBehaviour
         yield return new WaitForSeconds(0f);
         SpriteRenderer Player_SR = Player_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(Player_SR));
-
+        NikkiContent_obj.SetActive(false);
         yield return new WaitForSeconds(2f);
         //background非表示
         SpriteRenderer background_SR = background_obj.GetComponent<SpriteRenderer>();
@@ -511,26 +558,38 @@ public class StageFourController : MonoBehaviour
 
         Date_txt.color = textColor_black;
         NikkiContent_txt.color = textColor_black;
+        NikkiContent_Yuuchan_txt.color = textColor_black;
         // Date_txtのマテリアルカラーを白に設定
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor_black); // ← Faceカラーの追加
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
+        NikkiContent_Yuuchan_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
         // NikkiContent_txtのマテリアルカラーを白に設定
         NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor_black); // ← Faceカラーの追加
         NikkiContent_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
+        NikkiContent_Yuuchan_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
 
         yield return new WaitForSeconds(2f);
         Yuuchan_inbed_obj.SetActive(true);
         SpriteRenderer Yuuchan_inBed_SR = Yuuchan_inbed_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(Yuuchan_inBed_SR));
+        
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[8]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
 
         yield return new WaitForSeconds(3f);
         StartCoroutine(FadeOut(room_SR));
         StartCoroutine(FadeOut(roomShadow_SR));
         StartCoroutine(FadeOut(Bed_bokuIn_SR));
         StartCoroutine(FadeOutText(Date_txt));
-        StartCoroutine(FadeOutText(Yuuchan_inBed_SR));
+        StartCoroutine(FadeOut(Yuuchan_inBed_SR));
         StartCoroutine(FadeOutText(NikkiContent_txt));
-        
+
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[9]));
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
+
     }
 
 
@@ -557,7 +616,7 @@ public class StageFourController : MonoBehaviour
         float NowTime_f = 0f;
 
         Color c = text.color;
-        c.a = 1f; 
+        c.a = 1f;
         text.color = c;
 
         while (NowTime_f < FinishTime_f)
@@ -569,7 +628,7 @@ public class StageFourController : MonoBehaviour
         }
     }
 
-    
+
     IEnumerator FadeOut(SpriteRenderer SR)
     {
         float FinishTime_f = 1f;
@@ -594,7 +653,7 @@ public class StageFourController : MonoBehaviour
         float NowTime_f = 0f;
 
         Color c = text.color;
-        c.a = 1f; 
+        c.a = 1f;
         text.color = c;
 
         while (NowTime_f < FinishTime_f)
@@ -631,6 +690,34 @@ public class StageFourController : MonoBehaviour
         if (writing_sound != null && writing_sound.isPlaying)
         {
             writing_sound.Stop();
+        }
+
+    }
+    
+    IEnumerator KakuText_Yuuchan(TextMeshProUGUI targetText, string content)
+    {
+        targetText.text = "";
+        Color _color = targetText.color;
+        _color.a = 1f;
+        targetText.color = _color;
+        float waitTime = 0.1f;
+
+        // サウンドを再生
+        if (writing_Yuuchan_sound != null && !writing_Yuuchan_sound.isPlaying)
+        {
+            writing_Yuuchan_sound.Play();
+        }
+
+        foreach (char c in content)
+        {
+            targetText.text += c;
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        // サウンドを停止
+        if (writing_Yuuchan_sound != null && writing_Yuuchan_sound.isPlaying)
+        {
+            writing_Yuuchan_sound.Stop();
         }
         
     }
