@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -21,6 +22,7 @@ public class StageFourController : MonoBehaviour
     public string[] NikkiContent_Yuuchan_string;
 
     [Header("サウンド")]
+    public AudioSource main_sound;
     public AudioSource noise_sound;
     public AudioSource writing_sound;
     public AudioSource writing_Yuuchan_sound;
@@ -60,6 +62,7 @@ public class StageFourController : MonoBehaviour
     public GameObject RestartPos_obj;
     public GameObject[] deleteArea_obj;
     public StrokeController SC;
+    public MainSoundController MSC;
     [Header("UI関連")]
     public Material text_mat;
     public Color textColor_black = Color.black;
@@ -67,6 +70,8 @@ public class StageFourController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //サウンド情報
+        MSC = GameObject.FindWithTag("MainSound").GetComponent<MainSoundController>();
         //UI情報
         text_mat = Date_obj.GetComponent<Material>();
         Date_txt.fontMaterial.SetColor(ShaderUtilities.ID_OutlineColor, textColor_black);
@@ -505,7 +510,7 @@ public class StageFourController : MonoBehaviour
         Oka_obj.SetActive(false);
         OkaShadow_obj.SetActive(false);
         PC.walkSpeed_f = 0.2f;
-
+        MSC.SetStartB(true);
         
         //日記内容変更
         yield return new WaitForSeconds(1f);
@@ -572,7 +577,7 @@ public class StageFourController : MonoBehaviour
         Yuuchan_inbed_obj.SetActive(true);
         SpriteRenderer Yuuchan_inBed_SR = Yuuchan_inbed_obj.GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeIn(Yuuchan_inBed_SR));
-        
+
         yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[8]));
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
@@ -589,7 +594,8 @@ public class StageFourController : MonoBehaviour
         yield return StartCoroutine(KakuText_Yuuchan(NikkiContent_Yuuchan_txt, NikkiContent_Yuuchan_string[9]));
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(FadeOutText(NikkiContent_Yuuchan_txt));
-
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("FinalScene");
     }
 
 
