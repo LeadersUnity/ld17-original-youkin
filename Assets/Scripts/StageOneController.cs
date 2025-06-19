@@ -20,6 +20,7 @@ public class Stage1Controller : MonoBehaviour
     [Header("サウンド")]
     public AudioSource noise_sound;
     public AudioSource writing_sound;
+    public AudioSource YuuchanVoice_sound;
 
 
 
