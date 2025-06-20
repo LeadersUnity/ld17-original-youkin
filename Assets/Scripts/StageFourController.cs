@@ -26,6 +26,7 @@ public class StageFourController : MonoBehaviour
     public AudioSource noise_sound;
     public AudioSource writing_sound;
     public AudioSource writing_Yuuchan_sound;
+    public AudioSource Yuuchan_sound;
     [Header("ステージ4オブジェクト")]
     public GameObject room_obj;
     public GameObject bed_obj;
@@ -225,6 +226,7 @@ public class StageFourController : MonoBehaviour
         //Yuuchan表示
         yield return new WaitForSeconds(0.5f);
         Yuuchan_hanten_half_obj.SetActive(true);
+        Yuuchan_sound.Play();
         yield return new WaitForSeconds(2f);
         SpriteRenderer Yuuchan_hanten_half_SR = Yuuchan_hanten_half_obj.GetComponent<SpriteRenderer>();
         StartCoroutine(FadeOut(Yuuchan_hanten_half_SR));
@@ -286,8 +288,10 @@ public class StageFourController : MonoBehaviour
         yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[5]));
 
         //ユウちゃん表示 反転はAnimatorで最初からtrueにしてる
+       
         Yuuchan_obj.SetActive(true);
         SpriteRenderer yuuchan_SR = Yuuchan_obj.GetComponent<SpriteRenderer>();
+        Yuuchan_sound.Play();
         //YC.yuuchan_anim.SetBool("hanten", true);   
         StartCoroutine(FadeIn(yuuchan_SR));
         KarasuSpoon_obj.SetActive(false);
@@ -482,6 +486,7 @@ public class StageFourController : MonoBehaviour
         Player_obj.transform.position = new Vector3(-5.53f, -0.3f, 0);
         Player_obj.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
         yield return StartCoroutine(FadeIn(player_SR));
+        Yuuchan_sound.Play();
         deleteArea_obj[3].SetActive(true);
 
         //日記内容変更
@@ -495,6 +500,7 @@ public class StageFourController : MonoBehaviour
         //プレイヤー移動可能
         yield return new WaitForSeconds(1f);
         PC.playerCanMove_b = true;
+        
 
     }
 

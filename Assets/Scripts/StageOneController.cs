@@ -267,6 +267,7 @@ public class Stage1Controller : MonoBehaviour
         //ユウちゃん表示
         yield return new WaitForSeconds(1.5f);
         Yuuchan_obj.SetActive(true);
+        YuuchanVoice_sound.Play();
         //色のアルファを戻すスクリプトは、KakuText内に記入
         //日記の内容変更
         yield return new WaitForSeconds(1f);
@@ -357,6 +358,7 @@ public class Stage1Controller : MonoBehaviour
 
         //ユウちゃんの表示
         Yuuchan_karasuStage_obj.SetActive(true);
+        YuuchanVoice_sound.Play();
         //リスタートポジ
         PC.RestartPos_obj.transform.position = new Vector3(5.69f,-2.7f,0);
         //プレイヤー動作可能

@@ -1763,9 +1763,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 81e820cfe76714badafac0c2dc2e01ee, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ef172d4c04f4b46ac96d5f00effc7221, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3028,7 +3028,7 @@ MonoBehaviour:
   - "\u3058\u3085\u304E\u3087\u3046 \u304A\u308F\u3063\u3061\u3083\u3063\u305F\u307F\u305F\u3044"
   noise_sound: {fileID: 519420033}
   writing_sound: {fileID: 2097330609}
-  YuuchanVoice_sound: {fileID: 0}
+  YuuchanVoice_sound: {fileID: 711779670}
   MoveText_obj: {fileID: 1671931228}
   AorD_obj: {fileID: 1399542986}
   WorSpace_obj: {fileID: 1424280752}
