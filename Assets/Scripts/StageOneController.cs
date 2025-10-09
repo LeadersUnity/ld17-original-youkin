@@ -22,8 +22,6 @@ public class Stage1Controller : MonoBehaviour
     public AudioSource writing_sound;
     public AudioSource YuuchanVoice_sound;
 
-
-
     [Header("チュートリアルの文字オブジェクト")]
     public GameObject MoveText_obj;
     public GameObject AorD_obj;
@@ -541,14 +539,18 @@ public class Stage1Controller : MonoBehaviour
         }
     }
     
-
+    // =================================================================
+    // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+    // KakuText コルーチンを右揃え対応版に変更
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     IEnumerator KakuText(TextMeshProUGUI targetText, string content)
     {
-        targetText.text = "";
-        Color _color = targetText.color;
-        _color.a = 1f; 
-        targetText.color = _color;
-        float waitTime = 0.1f; 
+        // 最初にテキストコンポーネント自体のアルファを1（不透明）にしておく
+        Color baseColor = targetText.color;
+        baseColor.a = 1f;
+        targetText.color = baseColor;
+
+        float waitTime = 0.1f;
 
         // サウンドを再生
         if (writing_sound != null && !writing_sound.isPlaying)
@@ -556,9 +558,69 @@ public class Stage1Controller : MonoBehaviour
             writing_sound.Play();
         }
 
-        foreach (char c in content)
+        // 1. 全文をテキストコンポーネントにセットする
+        targetText.text = content;
+
+        // 2. テキスト情報を強制的に更新して、文字ごとの情報を生成させる
+        targetText.ForceMeshUpdate();
+
+        TMP_TextInfo textInfo = targetText.textInfo;
+        int totalCharacters = textInfo.characterCount;
+
+        // 3. 全ての文字の頂点カラーを透明にする
+        for (int i = 0; i < totalCharacters; i++)
         {
-            targetText.text += c;
+            // 文字情報を取得
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            
+            // 文字が存在しない、または空白などの場合はスキップ
+            if (!charInfo.isVisible)
+            {
+                continue;
+            }
+
+            // 文字を構成する頂点のマテリアルインデックスと頂点インデックスを取得
+            int materialIndex = charInfo.materialReferenceIndex;
+            int vertexIndex = charInfo.vertexIndex;
+
+            // 頂点カラー情報を取得し、アルファ値を0（透明）に設定
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+            Color32 transparentColor = vertexColors[vertexIndex + 0];
+            transparentColor.a = 0;
+
+            vertexColors[vertexIndex + 0] = transparentColor;
+            vertexColors[vertexIndex + 1] = transparentColor;
+            vertexColors[vertexIndex + 2] = transparentColor;
+            vertexColors[vertexIndex + 3] = transparentColor;
+        }
+
+        // 頂点カラーの変更をメッシュに適用（この時点ではまだ画面に反映されない）
+        targetText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+        // 4. 1文字ずつ透明度を戻していく
+        for (int i = 0; i < totalCharacters; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible)
+            {
+                continue;
+            }
+
+            int materialIndex = charInfo.materialReferenceIndex;
+            int vertexIndex = charInfo.vertexIndex;
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+
+            // 頂点カラーを255（不透明）に戻す
+            Color32 opaqueColor = vertexColors[vertexIndex + 0];
+            opaqueColor.a = 255;
+            vertexColors[vertexIndex + 0] = opaqueColor;
+            vertexColors[vertexIndex + 1] = opaqueColor;
+            vertexColors[vertexIndex + 2] = opaqueColor;
+            vertexColors[vertexIndex + 3] = opaqueColor;
+
+            // 変更をメッシュに適用して、文字を表示
+            targetText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
             yield return new WaitForSeconds(waitTime);
         }
 
@@ -568,6 +630,4 @@ public class Stage1Controller : MonoBehaviour
             writing_sound.Stop();
         }
     }
-    
-    
 }

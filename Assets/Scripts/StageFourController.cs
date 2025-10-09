@@ -678,12 +678,17 @@ public class StageFourController : MonoBehaviour
     }
 
 
+    // =================================================================
+    // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+    // KakuText コルーチンを右揃え対応版に変更
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     IEnumerator KakuText(TextMeshProUGUI targetText, string content)
     {
-        targetText.text = "";
-        Color _color = targetText.color;
-        _color.a = 1f;
-        targetText.color = _color;
+        // 最初にテキストコンポーネント自体のアルファを1（不透明）にしておく
+        Color baseColor = targetText.color;
+        baseColor.a = 1f;
+        targetText.color = baseColor;
+
         float waitTime = 0.1f;
 
         // サウンドを再生
@@ -692,9 +697,52 @@ public class StageFourController : MonoBehaviour
             writing_sound.Play();
         }
 
-        foreach (char c in content)
+        // 1. 全文をテキストコンポーネントにセットする
+        targetText.text = content;
+
+        // 2. テキスト情報を強制的に更新して、文字ごとの情報を生成させる
+        targetText.ForceMeshUpdate();
+
+        TMP_TextInfo textInfo = targetText.textInfo;
+        int totalCharacters = textInfo.characterCount;
+
+        // 3. 全ての文字の頂点カラーを透明にする
+        for (int i = 0; i < totalCharacters; i++)
         {
-            targetText.text += c;
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible) continue;
+
+            int materialIndex = charInfo.materialReferenceIndex;
+            int vertexIndex = charInfo.vertexIndex;
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+            
+            Color32 transparentColor = vertexColors[vertexIndex + 0];
+            transparentColor.a = 0;
+            vertexColors[vertexIndex + 0] = transparentColor;
+            vertexColors[vertexIndex + 1] = transparentColor;
+            vertexColors[vertexIndex + 2] = transparentColor;
+            vertexColors[vertexIndex + 3] = transparentColor;
+        }
+        targetText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+        // 4. 1文字ずつ透明度を戻していく
+        for (int i = 0; i < totalCharacters; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible) continue;
+
+            int materialIndex = charInfo.materialReferenceIndex;
+            int vertexIndex = charInfo.vertexIndex;
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+
+            Color32 opaqueColor = vertexColors[vertexIndex + 0];
+            opaqueColor.a = 255;
+            vertexColors[vertexIndex + 0] = opaqueColor;
+            vertexColors[vertexIndex + 1] = opaqueColor;
+            vertexColors[vertexIndex + 2] = opaqueColor;
+            vertexColors[vertexIndex + 3] = opaqueColor;
+
+            targetText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
             yield return new WaitForSeconds(waitTime);
         }
 
@@ -703,15 +751,19 @@ public class StageFourController : MonoBehaviour
         {
             writing_sound.Stop();
         }
-
     }
     
+    // =================================================================
+    // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+    // KakuText_Yuuchan コルーチンを右揃え対応版に変更
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     IEnumerator KakuText_Yuuchan(TextMeshProUGUI targetText, string content)
     {
-        targetText.text = "";
-        Color _color = targetText.color;
-        _color.a = 1f;
-        targetText.color = _color;
+        // 最初にテキストコンポーネント自体のアルファを1（不透明）にしておく
+        Color baseColor = targetText.color;
+        baseColor.a = 1f;
+        targetText.color = baseColor;
+
         float waitTime = 0.1f;
 
         // サウンドを再生
@@ -720,9 +772,52 @@ public class StageFourController : MonoBehaviour
             writing_Yuuchan_sound.Play();
         }
 
-        foreach (char c in content)
+        // 1. 全文をテキストコンポーネントにセットする
+        targetText.text = content;
+
+        // 2. テキスト情報を強制的に更新して、文字ごとの情報を生成させる
+        targetText.ForceMeshUpdate();
+
+        TMP_TextInfo textInfo = targetText.textInfo;
+        int totalCharacters = textInfo.characterCount;
+
+        // 3. 全ての文字の頂点カラーを透明にする
+        for (int i = 0; i < totalCharacters; i++)
         {
-            targetText.text += c;
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible) continue;
+
+            int materialIndex = charInfo.materialReferenceIndex;
+            int vertexIndex = charInfo.vertexIndex;
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+            
+            Color32 transparentColor = vertexColors[vertexIndex + 0];
+            transparentColor.a = 0;
+            vertexColors[vertexIndex + 0] = transparentColor;
+            vertexColors[vertexIndex + 1] = transparentColor;
+            vertexColors[vertexIndex + 2] = transparentColor;
+            vertexColors[vertexIndex + 3] = transparentColor;
+        }
+        targetText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+        // 4. 1文字ずつ透明度を戻していく
+        for (int i = 0; i < totalCharacters; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible) continue;
+
+            int materialIndex = charInfo.materialReferenceIndex;
+            int vertexIndex = charInfo.vertexIndex;
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+
+            Color32 opaqueColor = vertexColors[vertexIndex + 0];
+            opaqueColor.a = 255;
+            vertexColors[vertexIndex + 0] = opaqueColor;
+            vertexColors[vertexIndex + 1] = opaqueColor;
+            vertexColors[vertexIndex + 2] = opaqueColor;
+            vertexColors[vertexIndex + 3] = opaqueColor;
+
+            targetText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
             yield return new WaitForSeconds(waitTime);
         }
 
@@ -731,6 +826,5 @@ public class StageFourController : MonoBehaviour
         {
             writing_Yuuchan_sound.Stop();
         }
-        
     }
 }

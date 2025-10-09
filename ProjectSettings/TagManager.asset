@@ -17,6 +17,8 @@ TagManager:
   - StrokeController
   - Oka_delete
   - MainSound
+  - Scene1Controller
+  - ScrollCollider
   layers:
   - Default
   - TransparentFX

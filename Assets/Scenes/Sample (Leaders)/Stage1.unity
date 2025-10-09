@@ -721,7 +721,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -32, y: 145}
+  m_AnchoredPosition: {x: 350, y: 145}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &417524740
@@ -778,7 +778,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2367,7 +2367,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -92, y: 107}
+  m_AnchoredPosition: {x: 329, y: 107}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &848139618
@@ -2468,7 +2468,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -312.85132, y: -58.227173, z: -370.7046, w: 53.506042}
+  m_margin: {x: -312.85132, y: -58.227173, z: 52.728638, w: 53.506042}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3723,7 +3723,7 @@ MonoBehaviour:
   lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   lineColor: {r: 0, g: 0, b: 0, a: 0.9882353}
   lineWidth: 0.05
-  lineLifetime: 5
+  lineLifetime: 10
   PC: {fileID: 0}
 --- !u!4 &1206388086
 Transform:

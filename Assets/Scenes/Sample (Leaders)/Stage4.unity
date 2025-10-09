@@ -4845,7 +4845,7 @@ MonoBehaviour:
   lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   lineColor: {r: 0, g: 0, b: 0, a: 0.9882353}
   lineWidth: 0.05
-  lineLifetime: 5
+  lineLifetime: 10
   PC: {fileID: 0}
 --- !u!4 &1206388086
 Transform:

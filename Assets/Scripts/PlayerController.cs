@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip walk_sound;
 
     [Header("その他の情報")]
-    public Stage1Controller SOC;
+    public Scene1Controller SOC;
     public StageFourController SFC;
     public GameObject playerShadow_obj;
     public GameObject GameOverShadow_obj;
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         switch (stageNum)
         {
             case 1:
-                SOC = GameObject.FindWithTag("Stage1Controller").GetComponent<Stage1Controller>();
+                SOC = GameObject.FindWithTag("Scene1Controller").GetComponent<Scene1Controller>();
                 break;
             case 4:
                 SFC = GameObject.FindWithTag("Stage4Controller").GetComponent<StageFourController>();
@@ -62,16 +62,16 @@ public class PlayerController : MonoBehaviour
                     Debug.LogWarning("ステージ4ですが、YuuchanControllerが見つかりません！");
                 }
                 break;
-            
+
         }
-        
+
         GameOverShadow_obj.SetActive(false);
         if (GameOverShadow_hanten_obj != null)
         {
             GameOverShadow_hanten_obj.SetActive(false);
         }
         //サウンド関連
-            audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviour
         if (GameOver_b && !isGameOverRoutineRunning)
         {
             // ステージ4かつ、yuuchan_scrが見つかっている場合
-            if (stageNum == 4 && Yuuchan_obj != null && Yuuchan_obj.activeInHierarchy )
+            if (stageNum == 4 && Yuuchan_obj != null && Yuuchan_obj.activeInHierarchy)
             {
                 Debug.Log("withYuuchanGameOverを呼び出す");
                 StartCoroutine(withYuuchanGameOver());
@@ -185,10 +185,13 @@ public class PlayerController : MonoBehaviour
         if (isHanten_b)
         {
             player_anim.SetBool("hanten", true);
-        }else
+        }
+        else
         {
             player_anim.SetBool("hanten", false);
         }
+
+
     }
 
     public void Shadow(float Floor_y)
@@ -211,7 +214,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator SoloGameOver()
     {
-        
+
         isGameOverRoutineRunning = true;
         playerCanMove_b = false;
 
@@ -231,11 +234,11 @@ public class PlayerController : MonoBehaviour
             GameOverShadow_SR = GameOverShadow_hanten_obj.GetComponent<SpriteRenderer>();
         }
         if (GameOverShadow_SR != null || GameOverShadow_hanten_obj != null)
-            {
-                Color c = GameOverShadow_SR.color;
-                c.a = 1f; // 完全表示
-                GameOverShadow_SR.color = c;
-            }
+        {
+            Color c = GameOverShadow_SR.color;
+            c.a = 1f; // 完全表示
+            GameOverShadow_SR.color = c;
+        }
 
         if (!isHanten_b)
         {
@@ -245,7 +248,7 @@ public class PlayerController : MonoBehaviour
         {
             GameOverShadow_hanten_obj.SetActive(true);
         }
-        SpriteRenderer player_SR = GetComponent <SpriteRenderer>();
+        SpriteRenderer player_SR = GetComponent<SpriteRenderer>();
         yield return StartCoroutine(FadeOut(player_SR));
 
         // リスポーン
@@ -254,8 +257,8 @@ public class PlayerController : MonoBehaviour
 
 
         // フェードアウト処理
-        yield return StartCoroutine(FadeOutShadowandFadeInPlayer(GameOverShadow_SR,player_SR));
-        
+        yield return StartCoroutine(FadeOutShadowandFadeInPlayer(GameOverShadow_SR, player_SR));
+
         playerCanMove_b = true;
         GameOver_b = false;
         isGameOverRoutineRunning = false; // ★追加: コルーチン終了時にフラグを解除
@@ -346,7 +349,7 @@ public class PlayerController : MonoBehaviour
         c_y_shadow.a = 0f; yuuchanShadow_sr.color = c_y_shadow;
         GameOverShadow_obj.SetActive(false);
         GameOverShadow_hanten_obj.SetActive(false);
-        if(yuuchan_scr != null) yuuchan_scr.yuuchanGameOverShadow_obj.SetActive(false);
+        if (yuuchan_scr != null) yuuchan_scr.yuuchanGameOverShadow_obj.SetActive(false);
     }
 
     IEnumerator FadeIn(SpriteRenderer SR)
@@ -355,7 +358,7 @@ public class PlayerController : MonoBehaviour
         float NowTime_f = 0f;
 
         Color c = SR.color;
-        c.a = 1f; 
+        c.a = 1f;
         SR.color = c;
 
         while (NowTime_f < FinishTime_f)
@@ -365,7 +368,7 @@ public class PlayerController : MonoBehaviour
             SR.color = c;
             yield return null;
         }
-        
+
     }
     IEnumerator FadeOut(SpriteRenderer SR)
     {
@@ -373,9 +376,9 @@ public class PlayerController : MonoBehaviour
         float NowTime_f = 0f;
 
         Color c = SR.color;
-        c.a = 1f; 
+        c.a = 1f;
         SR.color = c;
-    
+
         while (NowTime_f < FinishTime_f)
         {
             NowTime_f += Time.deltaTime;
@@ -384,18 +387,18 @@ public class PlayerController : MonoBehaviour
             yield return null;
 
         }
-        
+
     }
-    IEnumerator FadeOutShadowandFadeInPlayer(SpriteRenderer SR,SpriteRenderer player_SR)
+    IEnumerator FadeOutShadowandFadeInPlayer(SpriteRenderer SR, SpriteRenderer player_SR)
     {
         float FinishTime_f = 1f;
         float NowTime_f = 0f;
 
         Color c = SR.color;
-        c.a = 1f; 
+        c.a = 1f;
         SR.color = c;
         Color c_p = player_SR.color;
-        c_p.a = 0f; 
+        c_p.a = 0f;
         player_SR.color = c_p;
 
         while (NowTime_f < FinishTime_f)
@@ -410,7 +413,7 @@ public class PlayerController : MonoBehaviour
         }
         c.a = 0f;
         SR.color = c;
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -433,14 +436,15 @@ public class PlayerController : MonoBehaviour
             playerCanMove_b = false;
             player_anim.SetBool("walk", false);
             KakikomuCan_b = false;
-            SOC.stage1Finish_b = true;
-            
+            //SOC.stage1Finish_b = true;
         }
+
+        
     }
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        
+
         if (other.gameObject.tag == "Stage1_Area")
         {
             //ステージ1
@@ -468,9 +472,28 @@ public class PlayerController : MonoBehaviour
             {
                 SOC.stage1Num_i = 5;
             }
-            
+
             other.gameObject.SetActive(false);
         }
+        if (other.gameObject.tag == "ScrollCollider")
+        {
+
+            //コライダーに触れたとき
+            //スクロールスタートがfalseなら、スクロールスタートをtrueに&speed を。スクロールスタートがtrueならfalseに,speed をもとに戻す。
+            if (!SOC.ScrollStart_b)
+            {
+                SOC.ScrollStart_b = true;
+                walkSpeed_f = 0;
+            }
+            /*
+            else
+            {
+                SOC.ScrollStart_b = false;
+                walkSpeed_f = 0.0015f;
+            }
+            */
+        }
+
         //ステージ4
         if (other.gameObject.tag == "Stage4_Area")
         {
@@ -500,8 +523,20 @@ public class PlayerController : MonoBehaviour
 
 
         if (other.gameObject.tag == "KarasuAttackArea")
+        {
+            KarasuAttack_b = true;
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "ScrollCollider")
+        {
+            if (SOC.ScrollStart_b)
             {
-                KarasuAttack_b = true;
+                SOC.ScrollStart_b = false;
+                walkSpeed_f = 0.8f;
             }
+        }
     }
 }

@@ -24,32 +24,68 @@ public class KarasuController : MonoBehaviour
     [Header("サウンド")]
     public AudioSource Karasu_sound;
 
+    private Coroutine soundLoopCoroutine; // 4秒おきサウンド用コルーチン
+
     void Start()
     {
         PC = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         startPos_vec = transform.position;
         sr = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>(); // Animatorコンポーネントを取得
+        anim = GetComponent<Animator>();
         sr.flipX = false;
-        // 開始時にサウンドを再生
-        Karasu_sound.Play();
+    }
+
+    void OnEnable()
+    {
+        if (Karasu_sound != null)
+        {
+            Karasu_sound.Play();
+        }
+        soundLoopCoroutine = StartCoroutine(PlaySoundLoop());
+    }
+
+    void OnDisable()
+    {
+        if (soundLoopCoroutine != null)
+        {
+            StopCoroutine(soundLoopCoroutine);
+            soundLoopCoroutine = null;
+        }
+    }
+
+    IEnumerator PlaySoundLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(4f);
+            if (Karasu_sound != null)
+            {
+                Karasu_sound.Play();
+            }
+        }
     }
 
     void Update()
     {
-        if (_bStopped || _bRespawning) return;
-
+        // ▼▼▼ 修正点 1: ゲームオーバー処理を最優先にする ▼▼▼
+        // ゲームオーバー状態になったら、リスポーン処理を一度だけ呼び出す
         if (PC.GameOver_b && !_bHasRespawned)
         {
             _bHasRespawned = true;
+            // 他のコルーチンが動いている可能性を考慮し、全て停止してからリスポーンを開始する
+            StopAllCoroutines();
             StartCoroutine(RespawnRoutine());
-            return;
+            return; // リスポーン処理中は他の動作をさせない
         }
 
+        // ゲームオーバー状態から復帰した際のフラグ管理
         if (!PC.GameOver_b && _bHasRespawned)
         {
             _bHasRespawned = false;
         }
+        // ▲▲▲ 修正ここまで ▲▲▲
+
+        if (_bStopped || _bRespawning) return;
 
         if (!_bDiving)
         {
@@ -71,45 +107,23 @@ public class KarasuController : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
+            // ▼▼▼ 修正点 2: プレイヤーに当たったら停止するだけにする ▼▼▼
+            // リセット処理はUpdate内のRespawnRoutineに任せる
             Karasu_sound.Stop();
             _bStopped = true;
-            StartCoroutine(ResetAfterHitPlayer());
+            // ▲▲▲ 修正ここまで ▲▲▲
         }
-        else{
-            
+        else
+        {
             Karasu_sound.Stop();
             _bStopped = true;
-            StartCoroutine(FadeOutOnly(sr)); 
+            StartCoroutine(FadeOutOnly(sr));
         }
     }
 
-    IEnumerator ResetAfterHitPlayer()
-    {
-        // アニメーションの競合を防ぐため、Animatorを一時的に無効化
-        if (anim != null) anim.enabled = false;
-
-        // 1. プレイヤーに当たったその場でフェードアウトする
-        yield return StartCoroutine(FadeOut(sr));
-
-        // 2. フェードアウト後（透明な間）に、状態をリセットして元の位置に戻る
-        transform.position = startPos_vec;
-        _bMovingRight = false;
-        _bDiving = false;
-        PC.KarasuAttack_b = false;
-        sr.flipX = false;
-
-        // 3. 元の位置でフェードインする
-        yield return StartCoroutine(FadeIn(sr));
-        
-        // 処理が終わったのでAnimatorを有効に戻す
-        if (anim != null) anim.enabled = true;
-
-        // 4. サウンドを再生する
-        Karasu_sound.Play();
-
-        // 5. 全ての処理が完了してから、Update()の処理を再開させる
-        _bStopped = false;
-    }
+    // ▼▼▼ 修正点 3: 不要になったためメソッドごと削除 ▼▼▼
+    // IEnumerator ResetAfterHitPlayer() { ... }
+    // ▲▲▲ 修正ここまで ▲▲▲
 
     void Patrol()
     {
@@ -185,13 +199,12 @@ public class KarasuController : MonoBehaviour
         Karasu_sound.Stop();
         _bRespawning = true;
 
-        // アニメーションの競合を防ぐため、Animatorを一時的に無効化
         if (anim != null) anim.enabled = false;
 
-        // 1. その場でフェードアウトする
+        // ① その場でだんだん消える
         yield return StartCoroutine(FadeOut(sr));
 
-        // 2. 透明な間に元の位置に戻し、状態をリセット
+        // ② 消えた後に初期位置へ戻し、各種フラグをリセット
         transform.position = startPos_vec;
         _bMovingRight = false;
         _bDiving = false;
@@ -199,14 +212,13 @@ public class KarasuController : MonoBehaviour
         PC.KarasuAttack_b = false;
         sr.flipX = false;
 
-        // 3. 元の位置でフェードインする
+        // ③ 初期位置でだんだん見えてくる
         yield return StartCoroutine(FadeIn(sr));
 
-        // 処理が終わったのでAnimatorを有効に戻す
         if (anim != null) anim.enabled = true;
-
-        // 4. サウンドを再生し、リスポーン完了
-        Karasu_sound.Play();
+        
+        // ④ サウンドループを再開し、復帰完了
+        soundLoopCoroutine = StartCoroutine(PlaySoundLoop());
         _bRespawning = false;
     }
 }
