@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // 追加: TextMeshProUGUIを使用しないが、元のスクリプトに含まれていたため保持
-using TMPro; // 追加: TextMeshProUGUIを使用しないが、元のスクリプトに含まれていたため保持
+using UnityEngine.UI;
+using TMPro; 
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -471,6 +472,8 @@ public class PlayerController : MonoBehaviour
             else if (other.gameObject.name == "Tree_karasu_delete_Area ")
             {
                 SOC.stage1Num_i = 5;
+            }else if( other.gameObject.name == "NextScene"){//仮作成
+                SceneManager.LoadScene("Stage4");
             }
 
             other.gameObject.SetActive(false);
