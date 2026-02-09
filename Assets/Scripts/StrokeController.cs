@@ -17,8 +17,10 @@ public class StrokeController : MonoBehaviour
     private LineRenderer lineRenderer;
     private List<Vector2> linePoints;
     
+
     [Header("その他のおぶえオブジェクト")]
     public PlayerController PC;
+    public Scene1Controller SOC;
 
     void Start()
     {
@@ -43,6 +45,8 @@ public class StrokeController : MonoBehaviour
                 }
             }
         }
+
+
     }
 
     // 線オブジェクトを作成
@@ -121,3 +125,4 @@ public class StrokeController : MonoBehaviour
         Destroy(targetLine);
     }
 }
+    

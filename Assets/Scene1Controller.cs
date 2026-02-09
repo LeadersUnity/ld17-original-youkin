@@ -41,6 +41,9 @@ public class Scene1Controller : MonoBehaviour
     public GameObject Karasu_AttackArea_obj;
     public GameObject Yuuchan_karasuStage_obj;
     public GameObject RoadInForest_obj;
+    public GameObject RoadInForestShadow_obj;
+
+    public GameObject NextScene_obj;
     [Header("ステージ1変数")]
     public bool ScrollStart_b;
 
@@ -108,6 +111,10 @@ public class Scene1Controller : MonoBehaviour
         Karasu_AttackArea_obj.SetActive(false);
         Yuuchan_karasuStage_obj.SetActive(false);
         RoadInForest_obj.SetActive(false);
+        RoadInForestShadow_obj.SetActive(false);
+
+        //NExtSceneに進む仮オブジェクト
+        NextScene_obj.SetActive(false);
 
         //DeleteAreaのSetActiveをfalseに
         for (int i = 0; i < 10; i++)
@@ -658,13 +665,79 @@ public class Scene1Controller : MonoBehaviour
 
     IEnumerator Stage1_3Scene()
     {
-        yield return new WaitForSeconds(0);
         PC.player_anim.SetBool("walk", false);
         PC.playerCanMove_b = false;
+        yield return new WaitForSeconds(1f);
+        //ゆうちゃん削除
+        Yuuchan_obj.SetActive(false);
+        Yuuchan_karasuStage_obj.SetActive(false);
+        ///木の枝消える
+        yield return new WaitForSeconds(1);
+        SpriteRenderer Tree_SR = Tree_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer TreeShadow_SR = TreeShadow_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer Karasu_stand_SR = Karasu_obj.GetComponent<SpriteRenderer>();
+        StartCoroutine(FadeOut(Tree_SR));
+        StartCoroutine(FadeOut(TreeShadow_SR));
+        StartCoroutine(FadeOut(Karasu_stand_SR));
+        Tree_obj.SetActive(false);
+        yield return new WaitForSeconds(1);
 
+        // --- ここから日記表示処理 ---
+        CanReadNikkiContent_num = 18; // 新しい日記を読めるように設定
+        currentTextIndex++; // 次の日記に進む
+
+        // 日記の表示ループ
+        while (true)
+        {
+            // 配列の範囲外になったらループを抜ける
+            if (currentTextIndex >= NikkiContent_string.Length)
+            {
+                break;
+            }
+            /*
+            // --- 日付表示 ---
+            Date_obj.SetActive(true);
+            Date_txt.text = ""; // 表示前にクリア
+            yield return StartCoroutine(KakuText(Date_txt, Date_string[currentTextIndex]));
+            */
+
+            // 日付から日記本文へは自動で進むように少し待機
+            yield return new WaitForSeconds(0f);
+
+            // --- 日記内容表示 ---
+            NikkiContent_obj.SetActive(true);
+            NikkiContent_txt.text = ""; // 表示前にクリア
+            isNikkiContentTyping = true; // スキップ機能を有効にする
+            yield return StartCoroutine(KakuText(NikkiContent_txt, NikkiContent_string[currentTextIndex]));
+            isNikkiContentTyping = false; // スキップ機能を無効にする
+
+
+            // --- 読める上限に達したかチェック ---
+            if (currentTextIndex >= CanReadNikkiContent_num)
+            {
+                // 上限に達した。ループを抜けて、テキストは表示したままにする
+                break;
+            }
+
+            // 上限に達していない場合は、Enterキー入力で次の日記へ進む
+            yield return StartCoroutine(WaitForEnterKey());
+
+            // 次の日記へ
+            currentTextIndex++;
+        }
+
+        //ステージの表示
         SpriteRenderer RoadInForest_SR = RoadInForest_obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer RoadInForestShadow_SR = RoadInForestShadow_obj.GetComponent<SpriteRenderer>();
+        RoadInForestShadow_obj.SetActive(true);
         RoadInForest_obj.SetActive(true);
-        
+        StartCoroutine(FadeIn(RoadInForest_SR, 1));
+        StartCoroutine(FadeIn(RoadInForestShadow_SR,1));
+
+        yield return new WaitForSeconds(1f);
+        PC.playerCanMove_b = true;
+
+        NextScene_obj.SetActive(true);
     }
 
 

@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Sample (Leaders)/FinalScene.unity
     guid: 9e0ee29a09b374d4c8a3d332cb215386
+  - enabled: 1
+    path: Assets/Scenes/Main (Conpetition)/Scene1_main.unity
+    guid: 0d52207e868fd4c60b11e688481189d8
   m_configObjects: {}

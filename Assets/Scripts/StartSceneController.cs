@@ -41,7 +41,7 @@ public class StartSceneController : MonoBehaviour
         StartCoroutine(FadeOutText(HajimeruButton_txt));
         StartCoroutine(FadeOutAudio(audioSource, fadeDuration));
         yield return new WaitForSeconds(4f);
-        SceneManager.LoadScene("Stage1");
+        SceneManager.LoadScene("Scene1_main");
     }
 
     IEnumerator StartScene()
